@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuestionario de Redes</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a28;
+    --border: #2a2a40;
+    --accent: #7c5cfc;
+    --accent2: #00e5c0;
+    --correct: #00e5c0;
+    --wrong: #ff4d6d;
+    --text: #e8e8f0;
+    --muted: #6a6a88;
+    --gold: #ffd166;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,92,252,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,92,252,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  header {
+    text-align: center;
+    padding: 2.5rem 0 2rem;
+  }
+
+  .logo-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 0.35rem 1rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent2);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 30%, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-family: 'Space Mono', monospace;
+  }
+
+  #setup-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin: 2rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #setup-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+
+  .setup-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .setup-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 1.8rem;
+  }
+
+  .setup-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .setup-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    white-space: nowrap;
+    min-width: 140px;
+  }
+
+  .num-control {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .num-btn {
+    background: none;
+    border: none;
+    color: var(--accent);
+    width: 42px;
+    height: 42px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    font-weight: 700;
+    transition: background 0.15s;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .num-btn:hover { background: var(--border); }
+
+  #num-display {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent2);
+    min-width: 40px;
+    text-align: center;
+  }
+
+  .max-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .mode-options {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .mode-label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+
+  .mode-label input {
+    accent-color: var(--accent);
+    width: 16px;
+    height: 16px;
+  }
+
+  .start-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+
+  .btn-start {
+    background: linear-gradient(135deg, var(--accent), #a78bfa);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 0.8rem 2rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    letter-spacing: 0.03em;
+  }
+
+  .btn-start:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-start:active { transform: translateY(0); }
+
+  #quiz-area { display: none; }
+
+  .progress-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .progress-bar-bg {
+    flex: 1;
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 100px;
+    transition: width 0.4s ease;
+  }
+
+  .progress-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .question-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem 2rem 1.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    animation: slideIn 0.35s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .question-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+
+  .q-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .q-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: var(--accent);
+    color: #fff;
+    padding: 0.2rem 0.7rem;
+    border-radius: 100px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .q-text {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .option-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding: 0.85rem 1rem;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    user-select: none;
+  }
+
+  .option-item:hover:not(.disabled) {
+    border-color: var(--accent);
+    background: rgba(124,92,252,0.08);
+  }
+
+  .option-item.selected {
+    border-color: var(--accent);
+    background: rgba(124,92,252,0.15);
+  }
+
+  .option-item.correct {
+    border-color: var(--correct);
+    background: rgba(0,229,192,0.1);
+  }
+
+  .option-item.wrong {
+    border-color: var(--wrong);
+    background: rgba(255,77,109,0.1);
+  }
+
+  .option-item.missed {
+    border-color: var(--gold);
+    background: rgba(255,209,102,0.08);
+  }
+
+  .option-item.disabled { cursor: default; }
+
+  .checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.15s, background 0.15s;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .option-item.selected .checkbox { border-color: var(--accent); background: var(--accent); color: #fff; }
+  .option-item.correct .checkbox  { border-color: var(--correct); background: var(--correct); color: #000; }
+  .option-item.wrong .checkbox    { border-color: var(--wrong); background: var(--wrong); color: #fff; }
+  .option-item.missed .checkbox   { border-color: var(--gold); background: var(--gold); color: #000; }
+
+  .option-text {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .feedback {
+    margin-top: 1.2rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-family: 'Space Mono', monospace;
+    line-height: 1.5;
+    display: none;
+  }
+
+  .feedback.show { display: block; }
+  .feedback.ok { background: rgba(0,229,192,0.1); border: 1px solid var(--correct); color: var(--correct); }
+  .feedback.fail { background: rgba(255,77,109,0.08); border: 1px solid var(--wrong); color: #ff8fa3; }
+
+  .nav-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .btn-check, .btn-next {
+    border: none;
+    border-radius: 10px;
+    padding: 0.7rem 1.5rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+
+  .btn-check {
+    background: var(--surface2);
+    color: var(--accent2);
+    border: 1.5px solid var(--accent2);
+  }
+
+  .btn-next {
+    background: linear-gradient(135deg, var(--accent), #a78bfa);
+    color: #fff;
+  }
+
+  .btn-check:hover, .btn-next:hover { opacity: 0.85; transform: translateY(-1px); }
+  .btn-check:disabled { opacity: 0.35; cursor: default; transform: none; }
+
+  #results-panel {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    text-align: center;
+    animation: slideIn 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #results-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--accent2));
+  }
+
+  .score-ring {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1.5rem;
+    position: relative;
+  }
+
+  .score-ring svg { transform: rotate(-90deg); }
+  .score-ring .ring-bg { fill: none; stroke: var(--surface2); stroke-width: 8; }
+  .score-ring .ring-fill { fill: none; stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 1s ease; }
+
+  .score-num {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .score-big {
+    font-size: 2rem;
+    font-weight: 800;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .score-small {
+    font-size: 0.65rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .result-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 0.4rem;
+  }
+
+  .result-sub {
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    margin-bottom: 2rem;
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .stat-chip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.6rem 1.2rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+  }
+
+  .stat-chip span { display: block; }
+  .stat-chip .sv { font-size: 1.1rem; font-weight: 700; }
+  .stat-chip .sl { color: var(--muted); font-size: 0.65rem; margin-top: 0.1rem; }
+
+  .btn-restart {
+    background: linear-gradient(135deg, var(--accent), #a78bfa);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 0.85rem 2.2rem;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+
+  .btn-restart:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  @media (max-width: 600px) {
+    .setup-row { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .btn-start { margin-left: 0; width: 100%; }
+    .question-card { padding: 1.5rem 1.2rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="logo-chip">📡 Redes de Comunicaciones</div>
+    <h1>Cuestionario<br>de Redes</h1>
+    <p class="subtitle">Selección aleatoria · Multirrespuesta</p>
+  </header>
+
+  <div id="setup-panel">
+    <div class="setup-title">Configurar cuestionario</div>
+    <div class="setup-desc">Ajusta los parámetros para tu sesión de repaso</div>
+    
+    <div class="setup-row">
+      <span class="setup-label">Nº de preguntas:</span>
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <div class="num-control">
+          <button class="num-btn" id="btn-minus">−</button>
+          <span id="num-display">5</span>
+          <button class="num-btn" id="btn-plus">+</button>
+        </div>
+        <span class="max-label" id="max-label">máx. — disponibles</span>
+      </div>
+    </div>
+
+    <div class="setup-row">
+      <span class="setup-label">Modalidad:</span>
+      <div class="mode-options">
+        <label class="mode-label">
+          <input type="radio" name="mode" value="estudio" checked> Estudio (con corrección inmediata)
+        </label>
+        <label class="mode-label">
+          <input type="radio" name="mode" value="examen"> Examen (resultados al final)
+        </label>
+      </div>
+    </div>
+
+    <div class="start-row">
+      <button class="btn-start" id="btn-start">Comenzar →</button>
+    </div>
+  </div>
+
+  <div id="quiz-area">
+    <div class="progress-wrapper">
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+      <span class="progress-label" id="progress-label">0 / 0</span>
+    </div>
+    <div id="question-container"></div>
+    <div class="nav-row">
+      <button class="btn-check" id="btn-check">Comprobar</button>
+      <button class="btn-next" id="btn-next" style="display:none">Siguiente →</button>
+    </div>
+  </div>
+
+  <div id="results-panel">
+    <div class="score-ring">
+      <svg viewBox="0 0 120 120" width="120" height="120">
+        <circle class="ring-bg" cx="60" cy="60" r="52"/>
+        <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="52"/>
+      </svg>
+      <div class="score-num">
+        <span class="score-big" id="score-pct">0%</span>
+        <span class="score-small">aciertos</span>
+      </div>
+    </div>
+    <div class="result-title" id="result-title">—</div>
+    <div class="result-sub" id="result-sub"></div>
+    <div class="stats-row">
+      <div class="stat-chip"><span class="sv" id="stat-correct" style="color:var(--correct)">0</span><span class="sl">Correctas</span></div>
+      <div class="stat-chip"><span class="sv" id="stat-wrong" style="color:var(--wrong)">0</span><span class="sl">Erróneas</span></div>
+      <div class="stat-chip"><span class="sv" id="stat-total" style="color:var(--accent2)">0</span><span class="sl">Total</span></div>
+    </div>
+    <button class="btn-restart" id="btn-restart">Volver a empezar</button>
+  </div>
+
+</div>
+
+<script>
+// ─── DATA ──────────────────────────────────────────────────────────────────────
+const ALL_QUESTIONS = [
+  // === EXAM 1 ===
+  { id: "E1-A", group: "A", exam: "1", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "ATM es un protocolo exclusivo de nivel 3.", correct: false },
+      { text: "Es posible multiplexar la comunicación a nivel de transporte.", correct: true },
+      { text: "El nivel de transporte no controla errores.", correct: false },
+      { text: "Los niveles 2 y 3 han de estar siempre presentes en una comunicación.", correct: false },
+      { text: "Una MAN no puede ser parte de una WAN.", correct: false }
+  ]},
+  { id: "E1-B", group: "B", exam: "1", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "La carga de una red no depende de la topología de la misma.", correct: true },
+      { text: "La carga de una red depende del número de nodos activos.", correct: false },
+      { text: "La carga de una red depende del método de acceso empleado.", correct: false },
+      { text: "La carga de una red siempre se mejora con un cambio de tecnología de red.", correct: false },
+      { text: "El empleo de los diferentes protocolos de comunicaciones está limitado por el valor de MTU.", correct: false }
+  ]},
+  { id: "E1-C", group: "C", exam: "1", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "No es posible realizar broadcast en redes en anillo.", correct: false },
+      { text: "Para una red ATM los tiempos de espera medios son altos en condiciones de baja carga.", correct: false },
+      { text: "No es posible obtener concurrencia en redes tipo Fast Ethernet.", correct: false },
+      { text: "Es posible obtener concurrencia en una red de tipo 802.3.", correct: true },
+      { text: "Todas las redes disponen de nivel de distribución.", correct: false }
+  ]},
+  { id: "E1-D", group: "D", exam: "1", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Las redes troncales que dan servicios de cable utilizan combinaciones de fibra y coaxial.", correct: true },
+      { text: "La dimensión de una red que utilice CSMA/CD es independiente del tiempo de propagación.", correct: false },
+      { text: "Un dispositivo 'hotswap' significa que soporta altas temperaturas.", correct: false },
+      { text: "Un acceso básico RDSI incluye un canal E2.", correct: false },
+      { text: "Un router trabaja más rápido que un bridge.", correct: false }
+  ]},
+  { id: "E1-E", group: "E", exam: "1", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Los circuitos virtuales utilizan una vía de transmisión dedicada.", correct: false },
+      { text: "En la conmutación de paquetes los nodos siempre realizan conversión de velocidad.", correct: false },
+      { text: "Se utilizan números de secuencia en el modelo de datagrama.", correct: true },
+      { text: "El costo en la conmutación de paquetes siempre será función del tiempo de conexión.", correct: false },
+      { text: "Un bridge trabaja más rápido que un router.", correct: false }
+  ]},
+  { id: "E1-F", group: "F", exam: "1", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Las redes ATM tienen una limitación de distancia debido al protocolo que utilizan.", correct: false },
+      { text: "El término Attachment Unit Interface nunca se asocia a redes tipo Ethernet.", correct: false },
+      { text: "El tamaño mínimo de paquete en redes Ethernet se adoptó por convenio.", correct: false },
+      { text: "Las redes tipo 802.3 permiten topología en estrella.", correct: true },
+      { text: "Si cambio de método de acceso aumentará la velocidad de transmisión.", correct: false }
+  ]},
+  { id: "E1-G", group: "G", exam: "1", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Frame Relay no permite enlaces por debajo de 2 Mbps.", correct: false },
+      { text: "Frame Relay permite enlaces por encima de 2 Mbps.", correct: true },
+      { text: "No se puede encapsular ATM sobre SDH.", correct: false },
+      { text: "Una MAN es siempre evolución de una LAN.", correct: false },
+      { text: "Si cambio el medio de transmisión deberé cambiar de tarjeta de red y el operativo de red.", correct: false }
+  ]},
+  { id: "E1-H", group: "H", exam: "1", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Es posible utilizar TCP/IP sobre líneas seriales.", correct: true },
+      { text: "No es posible utilizar TCP/IP en comunicaciones por satélite.", correct: false },
+      { text: "Un dispositivo de internetworking que tenga 'N' direcciones físicas debe tener 'N' direcciones lógicas.", correct: false },
+      { text: "Las direcciones lógicas de una red dependen de las direcciones físicas.", correct: false },
+      { text: "Si cambio el medio de transmisión deberé cambiar de tarjeta de red.", correct: false }
+  ]},
+  { id: "E1-I", group: "I", exam: "1", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Los datos transmitidos sobre redes Gigabit Ethernet son más rápidos que los de ATM.", correct: false },
+      { text: "Las redes ATM pueden transmitir video con QoS.", correct: true },
+      { text: "RDSI utiliza conmutación de paquetes con circuito virtual permanente.", correct: false },
+      { text: "RDSI utiliza conmutación de paquetes con circuito virtual conmutado.", correct: false },
+      { text: "Un mismo router soporta hasta 3 diferentes protocolos de red.", correct: false }
+  ]},
+  { id: "E1-J", group: "J", exam: "1", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Una red a 1000Mbps conseguirá siempre mejores prestaciones que otra a 100Mbps.", correct: false },
+      { text: "No se tarda lo mismo en transmitir un fichero de 1Kbyte por una línea de 128Kbps que enviar uno de 500 bits por una de 64Kbps.", correct: false },
+      { text: "La velocidad en baudios nunca podrá ser 1/3 de la velocidad de transmisión serie.", correct: false },
+      { text: "No se puede emplear cable coaxial para transmitir en banda base.", correct: false },
+      { text: "A nivel de mejorar la carga siempre es interesante insertar un repetidor en una red.", correct: false }
+  ]},
+  
+  // === EXAM 2 ===
+  { id: "E2-A", group: "A", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "ATM es un protocolo exclusivo de nivel 3.", correct: false },
+      { text: "No es posible multiplexar la comunicación a nivel de transporte.", correct: false },
+      { text: "El nivel de transporte no controla errores.", correct: false },
+      { text: "Los niveles 2 y 3 han de estar siempre presentes en una comunicación.", correct: false }
+  ]},
+  { id: "E2-B", group: "B", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "La carga de una red depende de la topología de la misma.", correct: false },
+      { text: "La carga de una red depende del número de nodos activos.", correct: false },
+      { text: "La carga de una red depende del método de acceso empleado.", correct: false },
+      { text: "La carga de una red siempre se mejora con un cambio de tecnología de red.", correct: false }
+  ]},
+  { id: "E2-C", group: "C", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "No es posible realizar broadcast en redes en anillo.", correct: false },
+      { text: "Para una red ATM los tiempos de espera medios son altos en condiciones de baja carga.", correct: false },
+      { text: "No es posible obtener concurrencia en redes tipo Fast Ethernet.", correct: false },
+      { text: "No es posible obtener concurrencia en una red de tipo 802.3.", correct: false }
+  ]},
+  { id: "E2-D", group: "D", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Las redes troncales que dan servicios de cable no utilizan combinaciones de fibra y coaxial.", correct: false },
+      { text: "La dimensión de una red que utilice CSMA/CD es independiente del tiempo de propagación.", correct: false },
+      { text: "Un dispositivo 'hotswap' significa que soporta altas temperaturas.", correct: false },
+      { text: "Un acceso básico RDSI incluye un canal E2.", correct: false }
+  ]},
+  { id: "E2-E", group: "E", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Los circuitos virtuales utilizan una vía de transmisión dedicada.", correct: false },
+      { text: "En la conmutación de paquetes los nodos siempre realizan conversión de velocidad.", correct: false },
+      { text: "No se utilizan números de secuencia en el modelo de datagrama.", correct: false },
+      { text: "El costo en la conmutación de paquetes siempre será función del tiempo de conexión.", correct: false }
+  ]},
+  { id: "E2-F", group: "F", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Las redes ATM tienen una limitación de distancia debido al protocolo que utilizan.", correct: false },
+      { text: "El término Attachment Unit Interface nunca se asocia a redes tipo Ethernet.", correct: false },
+      { text: "El tamaño mínimo de paquete en redes Ethernet se adoptó por convenio.", correct: false },
+      { text: "Las redes tipo 802.3 no permiten topología en estrella.", correct: false }
+  ]},
+  { id: "E2-G", group: "G", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Frame Relay no permite enlaces por debajo de 2 Mbps.", correct: false },
+      { text: "Frame Relay no permite enlaces por encima de 2 Mbps.", correct: false },
+      { text: "No se puede encapsular ATM sobre SDH.", correct: false },
+      { text: "Una MAN es siempre evolución de una LAN.", correct: false }
+  ]},
+  { id: "E2-H", group: "H", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "No es posible utilizar TCP/IP sobre líneas seriales.", correct: false },
+      { text: "No es posible utilizar TCP/IP en comunicaciones por satélite.", correct: false },
+      { text: "Un dispositivo de internetworking que tenga 'N' direcciones físicas debe tener 'N' direcciones lógicas.", correct: false },
+      { text: "Las direcciones lógicas de una red dependen de las direcciones físicas.", correct: false }
+  ]},
+  { id: "E2-I", group: "I", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Los datos transmitidos sobre redes Gigabit Ethernet son más rápidos que los de ATM.", correct: false },
+      { text: "Las redes ATM no pueden transmitir video con QoS.", correct: false },
+      { text: "RDSI utiliza conmutación de paquetes con circuito virtual permanente.", correct: false },
+      { text: "RDSI utiliza conmutación de paquetes con circuito virtual conmutado.", correct: false }
+  ]},
+  { id: "E2-J", group: "J", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Un mismo router soporta hasta 3 diferentes protocolos de red.", correct: false },
+      { text: "Si cambio el medio de transmisión deberé cambiar de tarjeta de red.", correct: false },
+      { text: "Si cambio el medio de transmisión deberé cambiar de tarjeta de red y el operativo de red.", correct: false },
+      { text: "Si cambio de método de acceso aumentará la velocidad de transmisión.", correct: false }
+  ]},
+  { id: "E2-K", group: "K", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "El empleo de los diferentes protocolos de comunicaciones está limitado por el valor de MTU.", correct: false },
+      { text: "Una MAN no puede ser parte de una WAN.", correct: false },
+      { text: "Todas las redes disponen de nivel de distribución.", correct: false },
+      { text: "IP es un protocolo de nivel 4.", correct: false }
+  ]},
+  { id: "E2-L", group: "L", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Un router trabaja más rápido que un bridge.", correct: false },
+      { text: "Un bridge trabaja más rápido que un router.", correct: false },
+      { text: "A nivel de mejorar la carga siempre es interesante insertar un repetidor en una red.", correct: false },
+      { text: "Un Protocol Soopf es una solución más eficiente que un Gateway.", correct: false }
+  ]},
+  { id: "E2-M", group: "M", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Una red a 1000Mbps conseguirá siempre mejores prestaciones que otra a 100Mbps.", correct: false },
+      { text: "No se tarda lo mismo en transmitir un fichero de 1Kbyte por una línea de 128Kbps que enviar uno de 500 bits por una de 64Kbps.", correct: true },
+      { text: "La velocidad en baudios nunca podrá ser 1/3 de la velocidad de transmisión serie.", correct: false },
+      { text: "No se puede emplear cable coaxial para transmitir en banda base.", correct: false }
+  ]},
+  { id: "E2-N", group: "N", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Las redes de cable no están estandarizadas.", correct: false },
+      { text: "Dos sistemas en una misma red no pueden tener IP iguales.", correct: false },
+      { text: "En una red con DHCP no puede ocurrir que 2 máquinas tengan el mismo IP.", correct: false },
+      { text: "ICMP permite realizar redirección de protocolo de sesión.", correct: false }
+  ]},
+  { id: "E2-O", group: "O", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "En una red ethernet el retardo de la señal es proporcional al número de nodos activos.", correct: false },
+      { text: "Es posible aplicar subnetting a una red TCP/IP sin emplear máscara de red.", correct: false },
+      { text: "No es posible conectar un servidor de ficheros al lado de un bridge si del otro extremo cuelgan estaciones sin disco.", correct: false },
+      { text: "No es posible conectar 2 routers en configuración redundante.", correct: false }
+  ]},
+  { id: "E2-P", group: "P", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Un Firewall es un tipo de Proxy.", correct: false },
+      { text: "Un Proxy es un tipo de Firewall.", correct: true },
+      { text: "Un NAT es una funcionalidad poco adecuada para un sistema Firewall.", correct: false },
+      { text: "Un Proxy-Firewall es un tipo de NAT.", correct: false }
+  ]},
+  { id: "E2-Q", group: "Q", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "RDSI es un protocolo derivado de TCP/IP.", correct: false },
+      { text: "El protocolo ICMP es de nivel 4.", correct: false },
+      { text: "El servicio DHCP puede ejecutarse sobre una máquina con DNS.", correct: true },
+      { text: "El servicio FTP utiliza el puerto 1023 para transferencia de datos.", correct: false }
+  ]},
+  { id: "E2-R", group: "R", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "No se puede encapsular IP sobre X.25.", correct: false },
+      { text: "No se puede encapsular Ethernet sobre ATM.", correct: false },
+      { text: "Un router puede que no tenga direcciones lógicas.", correct: true },
+      { text: "Un router puede que no tenga direcciones físicas.", correct: true }
+  ]},
+  { id: "E2-S", group: "S", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Un ADM es un dispositivo asociado a tecnologías Ethernet.", correct: false },
+      { text: "Un HUB dispone de dirección IP para gestionarlo.", correct: false },
+      { text: "Las direcciones IP clásicas permiten una ampliación en el campo de direccionamiento de hasta 2 bits.", correct: false },
+      { text: "Se puede definir un subnetting para 7 subredes operativas.", correct: true }
+  ]},
+  { id: "E2-T", group: "T", exam: "2", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "QAM es un tipo de multiplexación.", correct: false },
+      { text: "PCM es un tipo de multiplexación.", correct: false },
+      { text: "Se puede tener un Firewall y un router sobre la misma máquina operando correctamente.", correct: true },
+      { text: "Diseñar sin escalabilidad no es siempre posible.", correct: true }
+  ]},
+  
+  // === EXAM 3 ===
+  { id: "E3-A", group: "A", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "ATM es un protocolo de nivel 4.", correct: false },
+      { text: "Es posible multiplexar la comunicación a nivel de transporte.", correct: true },
+      { text: "El nivel de transporte controla errores.", correct: true },
+      { text: "Los niveles 2 y 3 han de estar siempre presentes en una comunicación.", correct: false }
+  ]},
+  { id: "E3-B", group: "B", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "La carga de una red depende de la topología de la misma.", correct: false },
+      { text: "La carga de una red depende del número de nodos activos.", correct: false },
+      { text: "La carga de una red depende del método de acceso empleado.", correct: false },
+      { text: "La carga de una red puede mejorar con un cambio de tecnología de red.", correct: true }
+  ]},
+  { id: "E3-C", group: "C", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Es posible realizar broadcast en redes en anillo.", correct: true },
+      { text: "Para una red ATM los tiempos de espera medios son altos en condiciones de baja carga.", correct: false },
+      { text: "Es posible obtener concurrencia en redes tipo Fast Ethernet.", correct: true },
+      { text: "Es posible obtener concurrencia en una red de tipo 802.3.", correct: true }
+  ]},
+  { id: "E3-E", group: "E", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Los circuitos virtuales utilizan una vía de transmisión dedicada.", correct: false },
+      { text: "En la conmutación de paquetes los nodos pueden realizar conversión de velocidad.", correct: true },
+      { text: "Se utilizan números de secuencia en el modelo de datagrama.", correct: true },
+      { text: "El costo en la conmutación de paquetes puede ser función del tiempo de conexión.", correct: true }
+  ]},
+  { id: "E3-F", group: "F", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Las redes ATM tienen una limitación de distancia debido al protocolo que utilizan.", correct: false },
+      { text: "El término Attachment Unit Interface nunca se asocia a redes tipo Ethernet.", correct: false },
+      { text: "El tamaño mínimo de paquete en redes Ethernet se adoptó por convenio.", correct: false },
+      { text: "Las redes tipo 802.3 no permiten topología en estrella.", correct: false }
+  ]},
+  { id: "E3-G", group: "G", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Frame Relay permite enlaces por debajo de 2 Mbps.", correct: true },
+      { text: "Frame Relay permite enlaces por encima de 2 Mbps.", correct: true },
+      { text: "Se puede encapsular ATM sobre SDH.", correct: true },
+      { text: "Geant es una red de ámbito internacional.", correct: true }
+  ]},
+  { id: "E3-H", group: "H", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Es posible utilizar TCP/IP sobre líneas seriales.", correct: true },
+      { text: "Es posible utilizar TCP/IP en comunicaciones por satélite.", correct: false },
+      { text: "Un dispositivo de internetworking que tenga 'N' direcciones físicas debe tener 'N' direcciones lógicas.", correct: true },
+      { text: "Las direcciones lógicas de una red NO dependen de las direcciones físicas.", correct: true }
+  ]},
+  { id: "E3-I", group: "I", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Los datos transmitidos sobre redes Gigabit Ethernet son más rápidos que los de ATM.", correct: false },
+      { text: "Las redes ATM pueden transmitir video con QoS.", correct: true },
+      { text: "RDSI utiliza conmutación de paquetes con circuito virtual permanente.", correct: false },
+      { text: "RDSI utiliza conmutación de paquetes con circuito virtual conmutado.", correct: false }
+  ]},
+  { id: "E3-J", group: "J", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Un mismo router puede soportar diferentes protocolos de red.", correct: true },
+      { text: "Si cambio el medio de transmisión deberé cambiar de tarjeta de red.", correct: false },
+      { text: "Si cambio el medio de transmisión deberé cambiar de tarjeta de red y el operativo de red.", correct: false },
+      { text: "Si cambio de método de acceso deberé cambiar de tarjeta de red.", correct: true }
+  ]},
+  { id: "E3-K", group: "K", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "El empleo de los diferentes protocolos de comunicaciones está limitado por el valor de MTU.", correct: false },
+      { text: "Un backbone puede formar una WAN.", correct: true },
+      { text: "Hay redes que no disponen de troncal de comunicaciones.", correct: true },
+      { text: "IP es un protocolo de nivel 4.", correct: false }
+  ]},
+  { id: "E3-L", group: "L", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Un router puede trabajar más rápido que un bridge.", correct: true },
+      { text: "Un bridge puede trabajar más rápido que un router.", correct: true },
+      { text: "A nivel de mejorar la carga siempre es interesante insertar un repetidor en una red.", correct: false },
+      { text: "Un Protocol Soopf es una solución más eficiente que un Gateway.", correct: false }
+  ]},
+  { id: "E3-M", group: "M", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Una red a 1000Mbps conseguirá siempre mejores prestaciones que otra a 100Mbps.", correct: false },
+      { text: "No se tarda lo mismo en transmitir un fichero de 1Kbyte por una línea de 128Kbps que enviar uno de 500 bits por una de 64Kbps.", correct: true },
+      { text: "La velocidad en baudios nunca podrá ser 1/3 de la velocidad de transmisión serie.", correct: false },
+      { text: "No se puede emplear cable coaxial para transmitir en banda base.", correct: false }
+  ]},
+  { id: "E3-N", group: "N", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Las redes de cable pueden utilizar cobre y fibra.", correct: true },
+      { text: "Dos máquinas en una misma red pueden tener IP iguales.", correct: true },
+      { text: "En una red con DHCP puede ocurrir que 3 máquinas tengan el mismo IP.", correct: true },
+      { text: "ICMP permite realizar redirección de protocolo de sesión.", correct: false }
+  ]},
+  { id: "E3-O", group: "O", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "En un anillo estándar el retardo de la señal es proporcional al número de nodos activos.", correct: true },
+      { text: "Es posible aplicar subnetting a una red TCP/IP sin emplear máscara de red.", correct: false },
+      { text: "Es posible conectar un servidor de ficheros al lado de un bridge si del otro extremo cuelgan estaciones sin disco.", correct: true },
+      { text: "No es posible conectar 2 routers en configuración redundante.", correct: false }
+  ]},
+  { id: "E3-P", group: "P", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Un Firewall es un tipo de Proxy.", correct: false },
+      { text: "Un Proxy es un tipo de Firewall.", correct: true },
+      { text: "Un NAT es una funcionalidad que puede presentar un Firewall.", correct: true },
+      { text: "Un Proxy-Firewall es un tipo de NAT.", correct: false }
+  ]},
+  { id: "E3-Q", group: "Q", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "RDSI es un protocolo derivado de TCP/IP.", correct: false },
+      { text: "El protocolo ICMP es de nivel 4.", correct: false },
+      { text: "El servicio DHCP puede ejecutarse sobre una máquina con DNS.", correct: true },
+      { text: "El servicio FTP utiliza el puerto 1023 para transferencia de datos.", correct: false }
+  ]},
+  { id: "E3-R", group: "R", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Se puede encapsular IP sobre X.25.", correct: true },
+      { text: "Se puede encapsular Ethernet sobre ATM.", correct: true },
+      { text: "Un router puede que no tenga direcciones lógicas.", correct: true },
+      { text: "Un router puede que no tenga direcciones físicas.", correct: true }
+  ]},
+  { id: "E3-S", group: "S", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Un HUB puede disponer de dirección IP para gestionarlo.", correct: true },
+      { text: "Las direcciones IP clásicas permiten una ampliación en el campo de direccionamiento de hasta 2 bits.", correct: false },
+      { text: "Se puede definir un subnetting para 7 subredes operativas.", correct: true }
+  ]},
+  { id: "E3-T", group: "T", exam: "3", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "QAM es un tipo de multiplexación.", correct: false },
+      { text: "PCM es un tipo de multiplexación.", correct: false },
+      { text: "Se puede tener un Firewall y un router sobre la misma máquina operando correctamente.", correct: true },
+      { text: "Diseñar sin escalabilidad no es siempre posible.", correct: true }
+  ]},
+
+  // === NUEVAS PREGUNTAS ===
+  { id: "N-A", group: "A", exam: "Nuevas", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Los circuitos virtuales no utilizan siempre una vía de transmisión dedicada.", correct: true },
+      { text: "En la conmutación de paquetes los nodos a veces realizan conversión de velocidad.", correct: true },
+      { text: "Se utilizan números de secuencia en el modelo de datagrama.", correct: true },
+      { text: "El costo en la conmutación se mide en función del tiempo de conexión.", correct: false },
+      { text: "El costo en la conmutación se mide en función del tráfico.", correct: false },
+      { text: "Seguridad e interoperabilidad en redes están relacionadas de forma inversa.", correct: false },
+      { text: "Son ciertas todas las anteriores.", correct: false }
+  ]},
+  { id: "N-B", group: "B", exam: "Nuevas", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Las redes ATM tienen una limitación de 1000 Km. de distancia debido al protocolo que utilizan.", correct: false },
+      { text: "Las redes SDH tienen una limitación de 200 km. de distancia debido al protocolo que utilizan.", correct: false },
+      { text: "El tamaño mínimo de paquete en redes ATM es de 48 bytes.", correct: false },
+      { text: "Las redes tipo 802.3 permiten topología en estrella.", correct: true },
+      { text: "Una red a 155 Mbps conseguirá siempre mejores prestaciones que otra a 100Mbps.", correct: false },
+      { text: "Se tarda lo mismo en transmitir un fichero de 1Kbyte por una línea de 128Kbps que enviar uno de 500 bits por una de 64Kbps.", correct: false },
+      { text: "Las redes de SONET también se definen para cobre.", correct: false }
+  ]},
+  { id: "N-C", group: "C", exam: "Nuevas", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Las transmisiones sobre redes FDDI son más rápidas que en las redes ATM.", correct: false },
+      { text: "Las redes ATM no pueden transmitir video con QoS.", correct: false },
+      { text: "JDS utiliza conmutación de paquetes con circuito virtual permanente.", correct: false },
+      { text: "SONET utiliza conmutación de paquetes con circuito virtual conmutado.", correct: false },
+      { text: "QAM es un tipo de modulación.", correct: true },
+      { text: "PCM es un tipo de modulación.", correct: true },
+      { text: "MCM es un tipo de modulación.", correct: false }
+  ]},
+  { id: "N-D", group: "D", exam: "Nuevas", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Es posible utilizar TCP/IP sobre ATM.", correct: true },
+      { text: "Es posible utilizar TCP/IP en comunicaciones 802.11.", correct: true },
+      { text: "Un dispositivo de internetworking que tenga “N” direcciones físicas debe tener “N” direcciones lógicas.", correct: false },
+      { text: "Las direcciones MAC de una red dependen de las direcciones físicas.", correct: false },
+      { text: "Las direcciones MAC de una red dependen de las direcciones lógicas.", correct: false },
+      { text: "Sólo son ciertas la 4 y la 5.", correct: false },
+      { text: "Sólo es cierta la 6.", correct: false }
+  ]},
+  { id: "N-E", group: "E", exam: "Nuevas", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Los LAN switch son más rápidos que los conmutadores ATM.", correct: false },
+      { text: "RDSI/Banda Estrecha utiliza conmutación de paquetes con circuito virtual permanente.", correct: false },
+      { text: "ADSL utiliza conmutación de circuito virtual conmutado.", correct: false },
+      { text: "Un mismo router puede soportar hasta 2 protocolos de red.", correct: false },
+      { text: "Las redes ATM permiten topología en estrella.", correct: true },
+      { text: "Las redes Gigabit Ethernet pueden transmitir video multicast.", correct: true },
+      { text: "Sólo es cierta la número 2.", correct: false }
+  ]},
+  { id: "N-F", group: "F", exam: "Nuevas", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Un Proxy NAT es un tipo de Firewall de filtrado de Paquetes.", correct: false },
+      { text: "Un NAT es una funcionalidad poco adecuada para un sistema Firewall.", correct: false },
+      { text: "No todas las redes disponen de nivel de core.", correct: true },
+      { text: "No todas las redes disponen de nivel de sesión.", correct: true },
+      { text: "La carga de una red no depende del método de acceso empleado.", correct: true },
+      { text: "Se debe diseñar antes con escalabilidad que con fiabilidad.", correct: false },
+      { text: "Son ciertas la 5 y la 6.", correct: false }
+  ]},
+  { id: "N-G", group: "G", exam: "Nuevas", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Frame Relay incorpora hasta 4 canales de 64 Kbps.", correct: false },
+      { text: "Frame Relay es un protocolo exclusivo de nivel 3 y 4.", correct: false },
+      { text: "Es posible multiplexar la comunicación a nivel de sesión.", correct: true },
+      { text: "El nivel de sesión, junto con el de aplicación, controlan errores.", correct: false },
+      { text: "El nivel 4 ha de estar siempre presente en una comunicación IP.", correct: false },
+      { text: "El nivel 4 no ha de estar siempre presente en una comunicación.", correct: true },
+      { text: "La velocidad en baudios nunca podrá ser 1/4 de la velocidad de transmisión serie.", correct: false }
+  ]},
+  { id: "N-H", group: "H", exam: "Nuevas", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "El overhead de una red depende del protocolo de acceso al medio empleado.", correct: false },
+      { text: "La carga de una red y el overhead están relacionados de forma inversa.", correct: false },
+      { text: "IP v4 es un protocolo con QoS.", correct: false },
+      { text: "El nivel de transporte está limitado por la longitud del datagrama.", correct: false },
+      { text: "El empleo de los diferentes protocolos de red está limitado por el valor de MTU.", correct: false },
+      { text: "La transferencia entre ordenadores de una red no depende de la topología física de la misma.", correct: true },
+      { text: "La carga de una red es directamenten proporcional al número de nodos activos.", correct: false }
+  ]},
+  { id: "N-I-1", group: "I", exam: "Nuevas", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Es posible realizar broadcast en redes 802.4.", correct: true },
+      { text: "Todas las redes disponen de nivel de distribución y core.", correct: false },
+      { text: "No se puede emplear fibra óptica para transmitir en banda base.", correct: false },
+      { text: "Para una red SDH los tiempos de espera medios son bajos en condiciones de baja carga.", correct: true },
+      { text: "Es posible obtener concurrencia en redes tipo JDS.", correct: true },
+      { text: "Es posible obtener concurrencia en una red 802.3.", correct: true },
+      { text: "Las redes que disponen de nivel de sesión son más seguras.", correct: false }
+  ]},
+  { id: "N-J", group: "J", exam: "Nuevas", text: "Indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "La telefonía IP no siempre es rentable para la organización que la incorpore.", correct: true },
+      { text: "El diseño de las redes de telecomunicaciones es jerárquico.", correct: false },
+      { text: "El diseño de las redes de voz es jerárquico.", correct: false },
+      { text: "Un b-router trabaja más rápido que un router.", correct: false },
+      { text: "Un bridge trabaja más rápido que un switch de nivel 3.", correct: false },
+      { text: "Un bridge trabaja de forma más eficiente que un router.", correct: false },
+      { text: "Es posible combinar telefonía IP con voz convencional dentro de una misma corporación.", correct: true }
+  ]},
+  { id: "N-I-ACC", group: "I", exam: "Tecnologías de Acceso", text: "En la tecnología FTTH (Fiber to the Home):", options: [
+      { text: "Se utilizan dos fibras ópticas", correct: false },
+      { text: "Sólo se utiliza una fibra óptica pero se logra enviar y transmitir datos de manera bidireccional", correct: true },
+      { text: "Emplea la técnica WDM (Wavelength Division Multiplexing) junto con ATM.", correct: false },
+      { text: "Emplea la técnica WDM (Wavelength Division Multiplexing) junto con SDH.", correct: false },
+      { text: "Emplea componentes ópticos especiales en los extremos de la fibra, conocidos como multiplexores y desmultiplexores.", correct: true }
+  ]},
+  { id: "N-II-ACC", group: "II", exam: "Tecnologías de Acceso", text: "Las diferencias entre una red FTTH (Fiber to the Home) y una red GPON (Gigabit Passive Optical Network) son:", options: [
+      { text: "En FTTH, la fibra óptica se extiende hasta cada hogar o negocio (topología punto a punto).", correct: true },
+      { text: "FTTH emplea el mismo rango de frecuencias que ADSL.", correct: false },
+      { text: "GPON logra una mayor eficiencia en el uso de la fibra óptica al compartir el ancho de banda entre múltiples usuarios utilizando división de tiempo y multiplexación.", correct: true },
+      { text: "GPON puede soportar velocidades más altas, ya que utiliza técnicas de multiplexación y división de tiempo para compartir el ancho de banda entre múltiples usuarios.", correct: true },
+      { text: "GPON es una tecnología específica utilizada en la implementación de redes FTTH.", correct: true }
+  ]},
+  { id: "N-III-TRA", group: "III", exam: "Tecnologías de Transporte", text: "En relación a la tecnología ATM podemos afirmar que:", options: [
+      { text: "ATM no se puede integrar con redes Ethernet.", correct: false },
+      { text: "ATM emplea conmutación de circuitos y de paquetes de forma selectiva.", correct: false },
+      { text: "ATM emplea conmutación de circuitos sobre SONET.", correct: false },
+      { text: "ATM puede transportar datagramas.", correct: true },
+      { text: "ATM es una tecnología de transporte que segmenta y transmite datos en forma de celdas a través de una red de telecomunicaciones.", correct: true }
+  ]},
+  { id: "N-IV-TRA", group: "IV", exam: "Tecnologías de Transporte", text: "En relación a la tecnología SDH (Synchronous Digital Hierarchy) podemos afirmar que:", options: [
+      { text: "SDH es una tecnología de conmutación de circuitos y paquetes utilizada en redes de área amplia (WAN) para transmitir datos en tiempo real, como videoconferencias y transmisiones en vivo.", correct: false },
+      { text: "SDH comprime los datos para facilitar su almacenamiento y transmisión.", correct: false },
+      { text: "SDH es una tecnología de multiplexación y transmisión sincronizada utilizada en redes de telecomunicaciones para transmitir datos y voz a través de enlaces de fibra óptica.", correct: true },
+      { text: "SDH emplea tecnología de encriptación que protege la privacidad de los datos transmitidos en una red.", correct: false },
+      { text: "SDH es una tecnología de enrutamiento dinámico utilizada para determinar la mejor ruta de transmisión de datos en una red.", correct: false }
+  ]},
+  { id: "N-V-INA", group: "V", exam: "Tecnologías Inalámbricas", text: "La tecnología WIFI 6 (802.11ax):", options: [
+      { text: "Surge como alternativa a 5G.", correct: false },
+      { text: "Permite llevar paquetes SDH.", correct: false },
+      { text: "Utiliza una frecuencia de banda de 2.4 GHz exclusivamente.", correct: false },
+      { text: "Proporciona una mayor eficiencia energética que versiones anteriores.", correct: true },
+      { text: "Permite una mayor cobertura que WiMAX.", correct: false }
+  ]},
+  { id: "N-VI-REL", group: "VI", exam: "Tecnologías Relacionadas", text: "En la relación entre ATM (Asynchronous Transfer Mode) y MPLS (Multiprotocol Label Switching) podemos afirmar que:", options: [
+      { text: "Inicialmente, ATM fue ampliamente adoptado como una tecnología de conmutación de paquetes. Proporcionaba una solución eficiente para el transporte de tráfico.", correct: true },
+      { text: "MPLS se desarrolló como una tecnología de enrutamiento basada en etiquetas que proporciona una mayor flexibilidad y escalabilidad en la conmutación de paquetes.", correct: true },
+      { text: "A medida que MPLS ganaba popularidad y se consolidaba como una tecnología de enrutamiento más versátil y eficiente, muchas redes que utilizaban inicialmente ATM migraron hacia MPLS.", correct: true },
+      { text: "Algunas implementaciones de MPLS permitieron la coexistencia y la capacidad de transportar tráfico ATM a través de redes MPLS (los paquetes ATM se pueden encapsular y transmitir utilizando MPLS como un mecanismo de transporte).", correct: true },
+      { text: "MPLS puede ofrecer compatibilidad con el tráfico ATM y permitir la migración gradual de las redes basadas en ATM hacia soluciones basadas en MPLS.", correct: true }
+  ]},
+  { id: "N-VII-REL", group: "VII", exam: "Tecnologías Relacionadas", text: "Las diferencias entre una red ATM y una red SDH son:", options: [
+      { text: "ATM es una tecnología de conmutación de paquetes, mientras que la red SDH es una tecnología de multiplexación y transmisión sincronizada.", correct: true },
+      { text: "ATM ofrece velocidades de transmisión variables y se adapta a diferentes necesidades de ancho de banda.", correct: true },
+      { text: "SDH ofrece velocidades de transmisión síncronas y predefinidas, como STM-1, STM-4, STM-16, etc.", correct: true },
+      { text: "En ATM, no hay una jerarquía fija, ya que puede adaptarse a diferentes requerimientos de ancho de banda.", correct: true },
+      { text: "SDH puede utilizarse como el medio de transporte principal, mientras que ATM se utiliza para la conmutación y el transporte de diferentes tipos de tráfico dentro de la red. Esto permite un enfoque híbrido para el diseño de redes, aprovechando las fortalezas de ambas tecnologías.", correct: true }
+  ]},
+  { id: "N-VIII-OSI", group: "VIII", exam: "Modelo de OSI", text: "¿Cuáles son las funciones principales del nivel de enlace en el modelo de OSI (Open Systems Interconnection)?", options: [
+      { text: "Establecer y finalizar las conexiones de transporte entre dispositivos de red.", correct: false },
+      { text: "Realizar el enrutamiento fijo de los datagramas.", correct: false },
+      { text: "Detectar y corregir errores en la transmisión de datos.", correct: true },
+      { text: "Proporcionar servicios al nivel 4 y superiores.", correct: false },
+      { text: "Definir el formato de los datagramas.", correct: false },
+      { text: "Gestionar el flujo de datos entre nodos adyacentes en la red.", correct: true },
+      { text: "Establecer la seguridad de la comunicación en la red.", correct: false }
+  ]},
+  { id: "N-XI-DIS", group: "XI", exam: "Diseño de Redes", text: "En un diseño de red:", options: [
+      { text: "Se ha de utilizar un único proveedor de equipos de red.", correct: false },
+      { text: "Se ha de minimizar la redundancia de enlaces y dispositivos.", correct: false },
+      { text: "Se ha de priorizar la simplicidad y la escalabilidad.", correct: true },
+      { text: "La topología lógica debe coincidir con la física.", correct: false },
+      { text: "Se ha de analizar el tráfico previamente.", correct: false },
+      { text: "Se deben considerar los requisitos de ancho de banda.", correct: true },
+      { text: "Ninguna de las anteriores es cierta.", correct: false }
+  ]},
+  { id: "N-X-DIS", group: "X", exam: "Diseño de Redes", text: "Diseñar redes a tres niveles (con una arquitectura de acceso, distribución y core) proporciona como ventajas:", options: [
+      { text: "Escalabilidad: Cada nivel puede expandirse independientemente.", correct: true },
+      { text: "Seguridad: Se podrían aplicar políticas de seguridad específicas por niveles.", correct: true },
+      { text: "Rendimiento optimizado: La separación en niveles permite una gestión más eficiente del tráfico.", correct: true },
+      { text: "Flexibilidad y adaptabilidad: La arquitectura de tres niveles se adapta mejor a diferentes necesidades y cambios en la red.", correct: true },
+      { text: "Gestión: La segmentación en niveles facilita la administración de la red.", correct: true },
+      { text: "Interoperabilidad: Para la futura integración de los servicios de red.", correct: false },
+      { text: "Integración: Para la futura interoperabilidad de los servicios de red.", correct: false }
+  ]},
+  { id: "N2-I", group: "I", exam: "Conceptos Generales", text: "Sobre tipos de redes y dispositivos, indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Una red PAN conecta dispositivos dentro de un mismo edificio corporativo.", correct: false },
+      { text: "Un switch filtra tráfico basándose en direcciones IP.", correct: false },
+      { text: "Un router permite interconectar redes con diferentes direcciones IP.", correct: true },
+      { text: "Un repetidor puede regenerar señales en la capa física.", correct: true },
+      { text: "Una red WAN puede estar formada por múltiples redes LAN interconectadas.", correct: true }
+  ]},
+  { id: "N2-II", group: "II", exam: "Tecnología de Transporte", text: "Sobre ATM, indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "ATM encapsula datos en celdas de tamaño fijo.", correct: true },
+      { text: "Emplea solo conmutación de circuitos, nunca de paquetes.", correct: false },
+      { text: "Es adecuada para tráfico en tiempo real, como voz o vídeo.", correct: true },
+      { text: "Cada celda ATM tiene 53 bytes: 48 de datos y 5 de cabecera.", correct: true },
+      { text: "ATM se sigue usando ampliamente en redes domésticas.", correct: false },
+      { text: "Proporciona niveles de QoS diferenciados por tipo de tráfico.", correct: true },
+      { text: "Su flexibilidad le permite integrarse con tecnologías como MPLS.", correct: true }
+  ]},
+  { id: "N2-III", group: "III", exam: "Tecnologías Relacionadas", text: "Sobre ATM y SDH, indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "SDH proporciona el transporte físico síncrono sobre el que puede viajar ATM.", correct: true },
+      { text: "Ambas tecnologías se utilizan juntas en redes troncales de operador.", correct: true },
+      { text: "ATM encapsula flujos de datos, mientras SDH define cómo multiplexarlos físicamente.", correct: true },
+      { text: "SDH y ATM usan el mismo tamaño de celda.", correct: false },
+      { text: "SDH puede funcionar sin ATM, pero no al revés en redes clásicas.", correct: false },
+      { text: "Estas tecnologías han sido desplazadas por MPLS y OTN en muchas redes actuales.", correct: true },
+      { text: "ATM y SDH son equivalentes, ya que ambas operan sobre cobre.", correct: false }
+  ]},
+  { id: "N2-IV", group: "IV", exam: "Tecnología de Transporte", text: "Sobre MPLS, indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "MPLS utiliza etiquetas para reenviar paquetes, sin necesidad de revisar la cabecera IP.", correct: true },
+      { text: "Opera entre capa 2 y capa 3 del modelo OSI.", correct: true },
+      { text: "Permite aplicar políticas de calidad de servicio para diferentes flujos.", correct: true },
+      { text: "Es exclusivo para redes locales pequeñas.", correct: false },
+      { text: "Puede coexistir con OTN y Carrier Ethernet.", correct: true },
+      { text: "Se usa en redes de operador para establecer caminos predeterminados.", correct: true },
+      { text: "MPLS transmite datos encapsulados siempre en formato ATM.", correct: false }
+  ]},
+  { id: "N2-V", group: "V", exam: "Tecnología Inalámbrica", text: "Sobre Wi-Fi, indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "Wi-Fi es una tecnología de acceso inalámbrico en redes LAN.", correct: true },
+      { text: "El estándar 802.11ac permite el uso de MU-MIMO y opera en la banda de 5 GHz.", correct: true },
+      { text: "Los puntos de acceso Wi-Fi operan en la capa de red del modelo OSI.", correct: false },
+      { text: "Wi-Fi 6 (802.11ax) mejora la eficiencia en entornos con muchos dispositivos conectados.", correct: true },
+      { text: "Wi-Fi requiere licencias especiales para operar en bandas ISM.", correct: false },
+      { text: "Wi-Fi 6 introdujo OFDMA para optimizar canales entre múltiples usuarios.", correct: true }
+  ]},
+  { id: "N2-VI", group: "VI", exam: "Tecnología Inalámbrica", text: "Sobre WiMAX, indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "WiMAX proporciona acceso inalámbrico de largo alcance.", correct: true },
+      { text: "Puede considerarse una alternativa inalámbrica a tecnologías de acceso por cable.", correct: true },
+      { text: "Opera únicamente en interiores, como Wi-Fi.", correct: false },
+      { text: "Se basa en estándares IEEE distintos a los de la familia Wi-Fi.", correct: true },
+      { text: "Puede dar servicio a múltiples usuarios en áreas metropolitanas.", correct: true },
+      { text: "Usa una arquitectura punto a punto siempre.", correct: false },
+      { text: "Es una tecnología aún utilizada en ciertas regiones rurales o países en desarrollo.", correct: true }
+  ]},
+  { id: "N2-VII", group: "VII", exam: "Tecnología de Aplicación", text: "Sobre VoIP, indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "VoIP permite transmitir voz a través de redes IP.", correct: true },
+      { text: "Utiliza protocolos como SIP y RTP.", correct: true },
+      { text: "Siempre garantiza calidad de servicio incluso en redes congestionadas.", correct: false },
+      { text: "Puede funcionar sobre redes Wi-Fi, LTE o Ethernet.", correct: true },
+      { text: "La latencia y el jitter son parámetros críticos en VoIP.", correct: true },
+      { text: "El tráfico VoIP es transportado generalmente usando TCP para evitar pérdida.", correct: false },
+      { text: "VoIP puede formar parte de una red convergente con datos y vídeo.", correct: true }
+  ]},
+  { id: "N2-VIII", group: "VIII", exam: "Modelo OSI", text: "Sobre la capa de presentación, indica cuáles de las siguientes afirmaciones son correctas:", options: [
+      { text: "La capa de presentación se encarga de cifrar y descifrar datos.", correct: true },
+      { text: "Codifica los datos para ser entendidos por la capa de aplicación.", correct: true },
+      { text: "Protocolos como FTP y HTTP operan exclusivamente en esta capa.", correct: false },
+      { text: "La compresión y la conversión de formato ocurren aquí.", correct: true },
+      { text: "Es responsable del direccionamiento lógico IP.", correct: false },
+      { text: "Esta capa puede trabajar con formatos como JPEG o ASCII.", correct: true },
+      { text: "Se sitúa justo debajo de la capa de transporte.", correct: false }
+  ]},
+  { id: "N2-IX", group: "IX", exam: "Diseño de Redes", text: "Sobre análisis y requisitos previos, en un diseño de red:", options: [
+      { text: "Comprender los requisitos y objetivos del negocio es fundamental para diseñar una red adecuada.", correct: true },
+      { text: "La topología define la estructura física y lógica de la red; elegir correctamente mejora la conectividad y escalabilidad.", correct: true },
+      { text: "Diseñar la red con suficiente capacidad y escalabilidad permite soportar el crecimiento futuro.", correct: true },
+      { text: "Si hay aplicaciones sensibles al retardo o ancho de banda, deben implementarse mecanismos de QoS.", correct: true },
+      { text: "Elegir estándares y protocolos adecuados asegura la interoperabilidad con otros sistemas y dispositivos.", correct: true },
+      { text: "El uso exclusivo de soluciones propietarias mejora la compatibilidad y flexibilidad del diseño.", correct: false },
+      { text: "El análisis del tráfico esperado no es necesario si la red es pequeña.", correct: false }
+  ]},
+  { id: "N2-X", group: "X", exam: "Diseño de Redes", text: "Sobre arquitectura jerárquica y sus ventajas, diseñar redes a tres niveles (acceso, distribución y core) proporciona:", options: [
+      { text: "Que cada nivel pueda expandirse de forma independiente sin afectar a los demás.", correct: true },
+      { text: "Posibilidad de aplicar políticas de seguridad y filtrado específicas en cada nivel.", correct: true },
+      { text: "Mejora la capacidad de adaptación ante nuevas necesidades o cambios de red.", correct: true },
+      { text: "Mayor interoperabilidad con otras redes si se aplican estándares.", correct: true },
+      { text: "Mayor redundancia al poder diseñar múltiples caminos entre niveles.", correct: true },
+      { text: "Una arquitectura más sencilla de mantener, escalar y documentar.", correct: true },
+      { text: "Una disminución general del rendimiento debido a la separación de capas.", correct: false }
+  ]}
+];
+
+// ─── STATE ─────────────────────────────────────────────────────────────────────
+let selectedCount = 5;
+let questions = [];
+let current = 0;
+let score = 0;
+let answered = false;
+let quizMode = 'estudio';
+const MAX = ALL_QUESTIONS.length;
+
+// ─── SETUP ─────────────────────────────────────────────────────────────────────
+document.getElementById('max-label').textContent = `máx. ${MAX} disponibles`;
+
+const numDisplay = document.getElementById('num-display');
+
+function updateNum(n) {
+  selectedCount = Math.max(1, Math.min(MAX, n));
+  numDisplay.textContent = selectedCount;
+}
+updateNum(5);
+
+document.getElementById('btn-minus').addEventListener('click', () => updateNum(selectedCount - 1));
+document.getElementById('btn-plus').addEventListener('click', () => updateNum(selectedCount + 1));
+
+document.getElementById('btn-start').addEventListener('click', startQuiz);
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  quizMode = document.querySelector('input[name="mode"]:checked').value;
+  questions = shuffle(ALL_QUESTIONS).slice(0, selectedCount);
+  current = 0;
+  score = 0;
+  
+  document.getElementById('setup-panel').style.display = 'none';
+  document.getElementById('quiz-area').style.display = 'block';
+  document.getElementById('results-panel').style.display = 'none';
+  
+  renderQuestion();
+}
+
+// ─── RENDER ────────────────────────────────────────────────────────────────────
+function renderQuestion() {
+  answered = false;
+  const q = questions[current];
+  const total = questions.length;
+
+  document.getElementById('progress-fill').style.width = `${(current / total) * 100}%`;
+  document.getElementById('progress-label').textContent = `${current + 1} / ${total}`;
+
+  const container = document.getElementById('question-container');
+  container.innerHTML = '';
+
+  const card = document.createElement('div');
+  card.className = 'question-card';
+
+  card.innerHTML = `
+    <div class="q-meta">
+      <span class="q-badge">Grupo ${q.group} · Examen ${q.exam}</span>
+    </div>
+    <div class="q-text">${q.text}</div>
+    <div class="options-list" id="opts"></div>
+    <div class="feedback" id="feedback"></div>
+  `;
+  container.appendChild(card);
+
+  const opts = card.querySelector('#opts');
+  q.options.forEach((opt, idx) => {
+    const item = document.createElement('div');
+    item.className = 'option-item';
+    item.dataset.idx = idx;
+    item.innerHTML = `
+      <div class="checkbox" id="cb-${idx}"></div>
+      <span class="option-text">${opt.text}</span>
+    `;
+    item.addEventListener('click', () => toggleOption(item, idx));
+    opts.appendChild(item);
+  });
+
+  if (quizMode === 'estudio') {
+    document.getElementById('btn-check').style.display = 'inline-flex';
+    document.getElementById('btn-check').disabled = false;
+    document.getElementById('btn-next').style.display = 'none';
+  } else {
+    document.getElementById('btn-check').style.display = 'none';
+    document.getElementById('btn-next').style.display = 'inline-flex';
+    // En modo examen cambiamos el texto del botón si es la última
+    const btnNext = document.getElementById('btn-next');
+    btnNext.textContent = (current === total - 1) ? 'Finalizar →' : 'Siguiente →';
+  }
+}
+
+function toggleOption(item, idx) {
+  if (answered) return;
+  item.classList.toggle('selected');
+  const cb = item.querySelector('.checkbox');
+  cb.textContent = item.classList.contains('selected') ? '✓' : '';
+}
+
+// ─── CHECK (SOLO MODO ESTUDIO) ─────────────────────────────────────────────────
+document.getElementById('btn-check').addEventListener('click', checkAnswer);
+
+function checkAnswer() {
+  if (answered || quizMode !== 'estudio') return;
+  answered = true;
+
+  const q = questions[current];
+  const items = document.querySelectorAll('.option-item');
+  const feedback = document.getElementById('feedback');
+
+  let allCorrect = true;
+
+  items.forEach((item, idx) => {
+    const opt = q.options[idx];
+    const selected = item.classList.contains('selected');
+    item.classList.add('disabled');
+
+    if (opt.correct && selected) {
+      item.classList.remove('selected');
+      item.classList.add('correct');
+      item.querySelector('.checkbox').textContent = '✓';
+    } else if (!opt.correct && selected) {
+      item.classList.remove('selected');
+      item.classList.add('wrong');
+      item.querySelector('.checkbox').textContent = '✗';
+      allCorrect = false;
+    } else if (opt.correct && !selected) {
+      item.classList.add('missed');
+      item.querySelector('.checkbox').textContent = '!';
+      allCorrect = false;
+    }
+  });
+
+  if (allCorrect) {
+    score++;
+    feedback.className = 'feedback show ok';
+    feedback.textContent = '✓ ¡Correcto! Has seleccionado exactamente las respuestas correctas.';
+  } else {
+    feedback.className = 'feedback show fail';
+    feedback.textContent = '✗ Incorrecto. En verde las correctas que marcaste, en amarillo las que te faltaron, y en rojo las incorrectas.';
+  }
+
+  document.getElementById('btn-check').style.display = 'none';
+  document.getElementById('btn-next').style.display = 'inline-flex';
+  document.getElementById('btn-next').textContent = 'Siguiente →';
+}
+
+// ─── NEXT / EXAMEN EVALUATION ──────────────────────────────────────────────────
+document.getElementById('btn-next').addEventListener('click', () => {
+  if (quizMode === 'examen') {
+    const q = questions[current];
+    const items = document.querySelectorAll('.option-item');
+    let allCorrect = true;
+
+    items.forEach((item, idx) => {
+      const opt = q.options[idx];
+      const selected = item.classList.contains('selected');
+      if (opt.correct !== selected) {
+        allCorrect = false;
+      }
+    });
+
+    if (allCorrect) score++;
+  }
+
+  current++;
+  
+  if (current >= questions.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+});
+
+// ─── RESULTS ───────────────────────────────────────────────────────────────────
+function showResults() {
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('results-panel').style.display = 'block';
+
+  const total = questions.length;
+  const pct = Math.round((score / total) * 100);
+
+  document.getElementById('score-pct').textContent = pct + '%';
+  document.getElementById('stat-correct').textContent = score;
+  document.getElementById('stat-wrong').textContent = total - score;
+  document.getElementById('stat-total').textContent = total;
+
+  const titles = [
+    [0,  39,  'Sigue practicando', 'Repasa los conceptos y vuelve a intentarlo.'],
+    [40, 59,  'Vas por buen camino', 'Algunos conceptos necesitan más repaso.'],
+    [60, 79,  '¡Buen trabajo!', 'Tienes una base sólida, sigue así.'],
+    [80, 99,  '¡Excelente!', 'Dominas muy bien los contenidos.'],
+    [100, 100, '¡Perfecto!', 'Respuestas perfectas. ¡Sobresaliente!'],
+  ];
+  const [, , title, sub] = titles.find(([lo, hi]) => pct >= lo && pct <= hi);
+  document.getElementById('result-title').textContent = title;
+  document.getElementById('result-sub').textContent = `${score} de ${total} preguntas correctas · ${sub}`;
+
+  const circumference = 2 * Math.PI * 52;
+  const ring = document.getElementById('ring-fill');
+  const color = pct >= 80 ? 'var(--correct)' : pct >= 50 ? 'var(--accent)' : 'var(--wrong)';
+  ring.style.stroke = color;
+  ring.style.strokeDasharray = circumference;
+  ring.style.strokeDashoffset = circumference;
+  setTimeout(() => {
+    ring.style.strokeDashoffset = circumference - (pct / 100) * circumference;
+  }, 100);
+}
+
+document.getElementById('btn-restart').addEventListener('click', () => {
+  document.getElementById('results-panel').style.display = 'none';
+  document.getElementById('setup-panel').style.display = 'block';
+  updateNum(selectedCount);
+});
+</script>
+</body>
+</html>
