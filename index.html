@@ -541,7 +541,8 @@
 
   <div id="setup-panel">
     <div class="setup-title">Configurar cuestionario</div>
-    <div class="setup-desc">Ajusta los parámetros para tu sesión de repaso</div>
+    <div class="setup-desc">Ajusta los parámetros para tu sesión de repaso. 
+      Hay 40 preguntas que no están corregidas por Felix pero que creo que están bien</div>
     
     <div class="setup-row">
       <span class="setup-label">Nº de preguntas:</span>
@@ -1174,6 +1175,249 @@ const ALL_QUESTIONS = [
       { text: "Mayor redundancia al poder diseñar múltiples caminos entre niveles.", correct: true },
       { text: "Una arquitectura más sencilla de mantener, escalar y documentar.", correct: true },
       { text: "Una disminución general del rendimiento debido a la separación de capas.", correct: false }
+  ]},
+  // EXAMEN TEST RARO 2
+  { id: "TR2-I", group: "I", exam: "TR2", text: "CONCEPTOS GENERALES - Sobre dispositivos de red", options: [
+      { text: "Un switch trabaja a nivel de la capa 3 para reenviar tráfico entre redes.", correct: false },
+      { text: "Un router puede dividir dominios de broadcast.", correct: true },
+      { text: "Un hub envía la señal recibida a todos los puertos sin distinguir destino.", correct: true },
+      { text: "Los firewalls solo se utilizan en redes grandes para filtrar tráfico externo.", correct: false },
+      { text: "Un punto de acceso inalámbrico funciona como bridge entre red cableada y Wi-Fi.", correct: true },
+      { text: "Un repetidor opera en la capa física amplificando señales sin procesarlas.", correct: true },
+      { text: "Los switches gestionan las conexiones usando direcciones MAC.", correct: true }
+  ]},
+  { id: "TR2-II", group: "II", exam: "TR2", text: "Tecnologías de acceso - Sobre ADSL", options: [
+      { text: "ADSL proporciona un canal simétrico de subida y bajada de datos.", correct: false },
+      { text: "Utiliza el par de cobre telefónico para transmitir datos digitales.", correct: true },
+      { text: "Permite el uso simultáneo de telefonía analógica e Internet mediante splitters.", correct: true },
+      { text: "ADSL está especialmente diseñada para tráfico empresarial pesado.", correct: false },
+      { text: "Su rendimiento disminuye cuanto mayor es la distancia a la central.", correct: true }
+  ]},
+  { id: "TR2-III", group: "III", exam: "TR2", text: "Tecnologías de acceso - Sobre GPON", options: [
+      { text: "GPON permite una topología punto a multipunto con splitters pasivos.", correct: true },
+      { text: "En GPON, el OLT se encuentra en el domicilio del usuario.", correct: false },
+      { text: "Todos los ONT conectados al mismo splitter reciben la misma señal descendente.", correct: true },
+      { text: "GPON requiere alimentación eléctrica en los dispositivos intermedios.", correct: false },
+      { text: "Es habitual cifrar el tráfico descendente para evitar acceso entre usuarios.", correct: true },
+      { text: "GPON utiliza técnicas de asignación dinámica de ancho de banda (DBA).", correct: true },
+      { text: "Cada ONT puede transmitir de forma simultánea en el canal ascendente sin coordinación.", correct: false }
+  ]},
+  { id: "TR2-IV", group: "IV", exam: "TR2", text: "Tecnologías inalámbricas - Sobre Wi-Fi 6", options: [
+      { text: "Wi-Fi 6 corresponde al estándar IEEE 802.11ax.", correct: true },
+      { text: "Opera exclusivamente en la banda de 2.4 GHz.", correct: false },
+      { text: "Introduce OFDMA para dividir el canal en múltiples subcanales.", correct: true },
+      { text: "MU-MIMO solo se aplica en sentido descendente.", correct: false },
+      { text: "Mejora el rendimiento en entornos con alta densidad de dispositivos.", correct: true }
+  ]},
+  { id: "TR2-V", group: "V", exam: "TR2", text: "Tecnologías inalámbricas - Sobre LTE (4G)", options: [
+      { text: "LTE es una tecnología de acceso móvil conmutada por circuitos.", correct: false },
+      { text: "Puede ofrecer velocidades superiores a 100 Mbps en movimiento.", correct: true },
+      { text: "Está pensada exclusivamente para uso doméstico y no profesional.", correct: false },
+      { text: "La arquitectura de LTE separa plano de usuario y plano de control.", correct: true },
+      { text: "Su funcionamiento se basa en la conmutación por paquetes.", correct: true }
+  ]},
+  { id: "TR2-VI", group: "VI", exam: "TR2", text: "Tecnologías de transporte - Sobre ATM", options: [
+      { text: "ATM encapsula los datos en celdas de longitud fija.", correct: true },
+      { text: "Utiliza conmutación de circuitos exclusivamente.", correct: false },
+      { text: "Es adecuado para transportar tráfico multimedia con requisitos de calidad.", correct: true },
+      { text: "La celda ATM tiene un tamaño de 64 bytes.", correct: false },
+      { text: "ATM puede coexistir con MPLS en redes troncales.", correct: true },
+      { text: "Proporciona control de calidad de servicio (QoS)", correct: true },
+      { text: "Es una tecnología actualmente muy extendida en redes locales.", correct: false }
+  ]},
+  { id: "TR2-VII", group: "VII", exam: "TR2", text: "Tecnologías de Transporte - Sobre DWDM", options: [
+      { text: "DWDM transmite señales ópticas usando diferentes longitudes de onda.", correct: true },
+      { text: "Aumenta la capacidad de una fibra sin necesidad de añadir nuevos hilos físicos.", correct: true },
+      { text: "Cada canal DWDM requiere una fibra óptica independiente.", correct: false },
+      { text: "DWDM se utiliza en redes troncales de larga distancia.", correct: true },
+      { text: "No es compatible con otras tecnologías como OTN o Ethernet.", correct: false },
+      { text: "Puede transportar múltiples protocolos simultáneamente.", correct: true }
+  ]},
+  { id: "TR2-VIII", group: "VIII", exam: "TR2", text: "Modelo OSI - Capa de transporte", options: [
+      { text: "TCP y UDP son protocolos de la capa de transporte.", correct: true },
+      { text: "UDP garantiza la entrega ordenada de los datos transmitidos.", correct: false },
+      { text: "La capa de transporte establece una comunicación extremo a extremo entre aplicaciones.", correct: true },
+      { text: "TCP implementa mecanismos de control de flujo y de congestión.", correct: true },
+      { text: "La capa de transporte encapsula datos de la capa de red en tramas.", correct: false }
+  ]},
+  { id: "TR2-IX", group: "IX", exam: "TR2", text: "Diseño de redes - Sobre niveles y arquitectura jerárquica", options: [
+      { text: "En una red jerárquica, la capa de acceso se conecta a los dispositivos finales.", correct: true },
+      { text: "El núcleo se encarga de aplicar políticas de seguridad y QoS.", correct: false },
+      { text: "La distribución agrega el tráfico y puede aplicar filtrado o segmentación.", correct: true },
+      { text: "Dividir la red en niveles facilita su escalabilidad.", correct: true },
+      { text: "Un diseño jerárquico complica el mantenimiento y la gestión diaria.", correct: false },
+      { text: "La red debe planificarse pensando únicamente en los requisitos actuales.", correct: false },
+      { text: "El modelo de tres capas incluye: acceso, distribución y núcleo.", correct: true }
+  ]},
+  { id: "TR2-X", group: "X", exam: "TR2", text: "Diseño de redes - Seguridad y redundancia", options: [
+      { text: "La seguridad debe aplicarse en el diseño desde el inicio.", correct: true },
+      { text: "Segmentar la red en VLANs permite aislar tráfico sensible.", correct: true },
+      { text: "Una red segura debe evitar el uso de firewalls para no limitar el rendimiento.", correct: false },
+      { text: "Un IDS bloquea automáticamente los ataques detectados.", correct: false },
+      { text: "La redundancia ayuda a prevenir puntos únicos de fallo.", correct: true },
+      { text: "El uso de protocolos como HSRP o VRRP proporciona tolerancia en gateways.", correct: true },
+      { text: "La documentación de accesos, políticas y equipos es parte del diseño seguro.", correct: true }
+  ]},
+
+  // EXAMEN TEST RARO 3
+  { id: "TR3-I", group: "I", exam: "TR3", text: "CONCEPTOS GENERALES - Sobre NAT, dominios y redes", options: [
+      { text: "NAT permite traducir múltiples IP privadas a una sola IP pública.", correct: true },
+      { text: "Cada puerto de switch representa un dominio de colisión separado.", correct: true },
+      { text: "Un router trabaja exclusivamente a nivel de capa 1.", correct: false },
+      { text: "El dominio de broadcast en una red termina en un router.", correct: true },
+      { text: "Las direcciones IP del rango 10.0.0.0/8 son públicas.", correct: false },
+      { text: "Las redes de tipo punto a punto utilizan una única dirección IP para dos dispositivos.", correct: false },
+      { text: "Una dirección IP 169.254.x.x es generada automáticamente si no hay DHCP.", correct: true }
+  ]},
+  { id: "TR3-II", group: "II", exam: "TR3", text: "CONCEPTOS GENERALES - Sobre protocolos y servicios", options: [
+      { text: "DNS se utiliza para traducir direcciones IP en nombres legibles.", correct: false },
+      { text: "SMTP es un protocolo de capa 2 para la transmisión de voZ.", correct: false },
+      { text: "HTTP y HTTPS operan en la capa de aplicación del modelo OSI.", correct: true },
+      { text: "DHCP asigna direcciones IP dinámicamente en una red local.", correct: true },
+      { text: "FTP cifra siempre los datos transmitidos entre cliente y servidor.", correct: false }
+  ]},
+  { id: "TR3-III", group: "III", exam: "TR3", text: "Tecnologías de acceso - Sobre SDSL", options: [
+      { text: "SDSL permite velocidades de subida y bajada iguales.", correct: true },
+      { text: "Utiliza la fibra óptica como medio de transmisión.", correct: false },
+      { text: "Es habitual en entornos empresariales que requieren simetría en la conexión.", correct: true },
+      { text: "Permite el uso simultáneo de Internet y telefonía analógica en el mismo par de cobre.", correct: false },
+      { text: "Es una tecnología más moderna y rápida que FTTH.", correct: false }
+  ]},
+  { id: "TR3-IV", group: "IV", exam: "TR3", text: "Tecnologías de acceso - Sobre FTTH", options: [
+      { text: "FTTH significa que la fibra óptica llega hasta el hogar del cliente.", correct: true },
+      { text: "Utiliza splitters activos que requieren alimentación en la red.", correct: false },
+      { text: "Tiene una velocidad de subida inferior a la de bajada en la mayoría de servicios residenciales.", correct: true },
+      { text: "Requiere cable coaxial desde el terminal óptico hasta el router.", correct: false },
+      { text: "Permite servicios de televisión, voz e Internet sobre la misma infraestructura.", correct: true }
+  ]},
+  { id: "TR3-V", group: "V", exam: "TR3", text: "Tecnologías inalámbricas - Sobre 5G", options: [
+      { text: "5G utiliza frecuencias más altas que 4G, lo que mejora la velocidad pero reduce el alcance.", correct: true },
+      { text: "Está diseñado para admitir comunicaciones ultra fiables y de baja latencia.", correct: true },
+      { text: "Su despliegue requiere más estaciones base que generaciones anteriores.", correct: false },
+      { text: "Solo puede usarse en entornos urbanos con cobertura completa.", correct: false },
+      { text: "Puede superar velocidades de 1Gbps en condiciones ideales.", correct: true },
+      { text: "El 5G utiliza conmutación por paquetes, como 4G.", correct: true },
+      { text: "Es compatible con redes LTE existentes.", correct: true }
+  ]},
+  { id: "TR3-VI", group: "VI", exam: "TR3", text: "Tecnologías inalámbricas - Sobre redes Wi-Fi", options: [
+      { text: "Wi-Fi 6 mejora la eficiencia en entornos densos gracias al uso de OFDMA.", correct: true },
+      { text: "El estándar 802.11n es más nuevo que el 802.11ax.", correct: false },
+      { text: "Wi-Fi utiliza frecuencias en bandas libres como 2.4 GHz y 5 GHz.", correct: true },
+      { text: "Un punto de acceso Wi-Fi actúa como switch inalámbrico.", correct: false },
+      { text: "La cobertura de Wi-Fi suele ser mayor que la de 5G.", correct: false }
+  ]},
+  { id: "TR3-VII", group: "VII", exam: "TR3", text: "Tecnologías de Transporte - Sobre MPLS", options: [
+      { text: "MPLS utiliza etiquetas para enrutar el tráfico sin depender solo de la IP.", correct: true },
+      { text: "Opera exclusivamente en la capa física del modelo OSI.", correct: false },
+      { text: "Permite establecer rutas predefinidas con calidad de servicio garantizada.", correct: true },
+      { text: "Es utilizado en redes troncales por proveedores de Internet.", correct: true },
+      { text: "Es incompatible con tecnologías como OTN o SDH.", correct: false }
+  ]},
+  { id: "TR3-VIII", group: "VIII", exam: "TR3", text: "Tecnologías de transporte - Sobre OTN", options: [
+      { text: "OTN encapsula protocolos como Ethernet o IP para transporte eficiente.", correct: true },
+      { text: "Está pensado para redes LAN con cobertura de corto alcance.", correct: false },
+      { text: "Utiliza jerarquía digital síncrona como base estructural.", correct: false },
+      { text: "OTN y DWDM pueden coexistir para maximizar el uso de la fibra.", correct: true },
+      { text: "Es una tecnología de transporte utilizada en redes de operador.", correct: true }
+  ]},
+  { id: "TR3-IX", group: "IX", exam: "TR3", text: "Modelo OSI - Sobre la capa de enlace", options: [
+      { text: "La capa de enlace se encarga de encapsular los datos en tramas.", correct: true },
+      { text: "Gestiona el direccionamiento lógico mediante direcciones IP.", correct: false },
+      { text: "Protocolos como Ethernet y PPP operan en esta cара.", correct: true },
+      { text: "Incluye mecanismos de control de errores como CRC.", correct: true },
+      { text: "Los switches operan principalmente en esta capa.", correct: true }
+  ]},
+  { id: "TR3-X", group: "X", exam: "TR3", text: "Diseño de redes - Sobre segmentación y escalabilidad", options: [
+      { text: "Segmentar una red en VLANs permite aislar tráfico por departamentos o servicios.", correct: true },
+      { text: "Un diseño escalable permite aumentar el tamaño de la red sin rehacer su arquitectura.", correct: true },
+      { text: "Las VLANs permiten crear múltiples subredes físicas en una misma red lógica.", correct: false },
+      { text: "Toda la lógica de segmentación debe realizarse en la capa de núcleo.", correct: false },
+      { text: "Documentar el direccionamiento IP es parte del diseño lógico.", correct: true }
+  ]},
+
+  // EXAMEN TEST RARO 4
+  { id: "TR4-I", group: "I", exam: "TR4", text: "CONCEPTOS GENERALES - Sobre redes LAN y WAN", options: [
+      { text: "Una red LAN se extiende geográficamente más que una red WAN.", correct: false },
+      { text: "En una red WAN es habitual el uso de tecnologías de transporte como MPLS.", correct: true },
+      { text: "Una red de campus es un ejemplo de red LAN extendida.", correct: true },
+      { text: "Los dispositivos conectados por Ethernet forman una red PAN.", correct: false },
+      { text: "Las redes LAN suelen estar organizadas en estrella o árbol jerárquico.", correct: true }
+  ]},
+  { id: "TR4-II", group: "II", exam: "TR4", text: "Tecnología de acceso - Sobre DOCSIS", options: [
+      { text: "DOCSIS se utiliza para transmitir datos por redes de cable coaxial.", correct: true },
+      { text: "Permite compartir infraestructura con señales de televisión.", correct: true },
+      { text: "Está basado en redes de tipo HFC (Hybrid Fiber-Coax).", correct: true },
+      { text: "Cada cliente tiene un canal físico dedicado hasta el nodo óptico.", correct: false },
+      { text: "Se utiliza exclusivamente en redes internas empresariales.", correct: false },
+      { text: "Puede ofrecer velocidades superiores a 1 Gbps en versiones modernas.", correct: true },
+      { text: "Es una alternativa a FTTH en ciertos entornos urbanos.", correct: true }
+  ]},
+  { id: "TR4-III", group: "III", exam: "TR4", text: "Tecnología de acceso - Sobre PLC", options: [
+      { text: "PLC utiliza el cableado eléctrico para transmitir datos de red.", correct: true },
+      { text: "Es ideal para grandes redes corporativas que requieren alta seguridad.", correct: false },
+      { text: "Su velocidad real depende de la calidad de la instalación eléctrica.", correct: true },
+      { text: "PLC necesita configuración compleja y administración centralizada.", correct: false },
+      { text: "Opera en frecuencias superiores a la de la red eléctrica convencional.", correct: true }
+  ]},
+  { id: "TR4-IV", group: "IV", exam: "TR4", text: "Tecnología de transporte - Sobre SDH", options: [
+      { text: "SDH es una tecnología digital síncrona de transporte por fibra.", correct: true },
+      { text: "Está diseñada para redes troncales de alta capacidad.", correct: true },
+      { text: "Emplea técnicas de multiplexación en el dominio de la frecuencia.", correct: false },
+      { text: "Puede transportar voz, datos y vídeo en jerarquía estructurada.", correct: true },
+      { text: "Ha sido reemplazada por completo por OTN y DWDM.", correct: false },
+      { text: "Utiliza tramas de tamaño fijo con intervalos temporales constantes.", correct: true }
+  ]},
+  { id: "TR4-V", group: "V", exam: "TR4", text: "Tecnologías relacionadas - Sobre FTTH y GPON", options: [
+      { text: "FTTH es el modelo de despliegue físico y GPON es la tecnología lógica usada en él.", correct: true },
+      { text: "GPON permite dividir una sola fibra usando splitters pasivos en la red FTTH.", correct: true },
+      { text: "En redes GPON, los datos descendentes se transmiten a todos los ONT simultáneamente.", correct: true },
+      { text: "FTTH utiliza multiplexación óptica por longitud de onda (como DWDM).", correct: false },
+      { text: "GPON usa técnicas de acceso compartido en el canal ascendente.", correct: true },
+      { text: "FTTH y GPON son incompatibles entre sí.", correct: false },
+      { text: "En FTTH, el OLT suele estar ubicado en la central del proveedor.", correct: true }
+  ]},
+  { id: "TR4-VI", group: "VI", exam: "TR4", text: "Tecnología inalámbrica - Sobre 5G", options: [
+      { text: "5G utiliza frecuencias más altas que 4G, lo que mejora la velocidad pero reduce el alcance.", correct: true },
+      { text: "Está diseñado para admitir comunicaciones ultra fiables y de baja latencia.", correct: true },
+      { text: "Su despliegue requiere más estaciones base que generaciones anteriores.", correct: true },
+      { text: "Solo puede usarse en entornos urbanos con cobertura completa.", correct: false },
+      { text: "Puede superar velocidades de 1Gbps en condiciones ideales.", correct: true },
+      { text: "5G utiliza conmutación por paquetes, como 4G.", correct: true },
+      { text: "Es incompatible con redes LTE existentes.", correct: false }
+  ]},
+  { id: "TR4-VII", group: "VII", exam: "TR4", text: "Tecnología de transporte - Sobre Carrier Ethernet", options: [
+      { text: "Carrier Ethernet extiende las capacidades de Ethernet a redes de operador.", correct: true },
+      { text: "Es una solución usada únicamente en redes domésticas.", correct: false },
+      { text: "Permite servicios punto a punto, multipunto y VLANs extendidas.", correct: true },
+      { text: "Ofrece calidad de servicio y gestión más avanzadas que Ethernet tradicional.", correct: true },
+      { text: "Es incompatible con redes MPLS y OTN.", correct: false },
+      { text: "Se utiliza para ofrecer servicios de datos entre sedes de empresas.", correct: true },
+      { text: "Opera a nivel de capa de enlace con soporte para funciones de capa 3.", correct: true }
+  ]},
+  { id: "TR4-VIII", group: "VIII", exam: "TR4", text: "Modelo OSI - Sobre la capa de red", options: [
+      { text: "La capa de red se encarga del direccionamiento lógico mediante direcciones IP.", correct: true },
+      { text: "Protocolos como IP, ICMP y ARP pertenecen a esta capa.", correct: false },
+      { text: "Los routers operan en la capa de red.", correct: true },
+      { text: "Esta capa se encarga del reensamblaje de fragmentos en el destino final.", correct: true },
+      { text: "La capa de red trabaja con tramas y direcciones MAC.", correct: false }
+  ]},
+  { id: "TR4-IX", group: "IX", exam: "TR4", text: "Diseño de redes - Sobre arquitectura jerárquica", options: [
+      { text: "La arquitectura jerárquica separa la red en capas con funciones distintas.", correct: true },
+      { text: "El núcleo se centra en velocidad, redundancia y mínima lógica.", correct: true },
+      { text: "La capa de distribución se conecta directamente con los dispositivos finales.", correct: false },
+      { text: "Acceso, distribución y núcleo son los tres niveles típicos.", correct: true },
+      { text: "Aplicar políticas como ACL o QoS suele hacerse en la capa de acceso.", correct: false },
+      { text: "Esta arquitectura mejora la escalabilidad y mantenimiento.", correct: true },
+      { text: "El uso de un único nivel jerárquico es preferible por simplicidad.", correct: false }
+  ]},
+  { id: "TR4-X", group: "X", exam: "TR4", text: "Diseño de redes - Sobre seguridad y documentación", options: [
+      { text: "Documentar VLANs, direcciones IP y servicios es parte del diseño seguro.", correct: true },
+      { text: "La segmentación ayuda a limitar la propagación de ataques internos.", correct: true },
+      { text: "Una red segura evita el uso de firewalls para mantener el rendimiento.", correct: false },
+      { text: "Las listas de control de acceso (ACL) permiten filtrar tráfico en routers y switches.", correct: true },
+      { text: "La alta disponibilidad contradice los principios de seguridad.", correct: false },
+      { text: "Los logs y registros deben formar parte del diseño desde el inicio.", correct: true },
+      { text: "El control de acceso a nivel físico (sala, equipos) también es parte de la seguridad de red", correct: true }
   ]}
 ];
 
