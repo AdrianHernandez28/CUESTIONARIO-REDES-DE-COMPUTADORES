@@ -538,21 +538,26 @@
     <h1>Cuestionario<br>de Redes</h1>
     <p class="subtitle">Selección aleatoria · Multirrespuesta</p>
   </header>
-  <div class="setup-row">
+  
+  <div id="setup-panel">
+    <div class="setup-title">Configurar cuestionario</div>
+    <div class="setup-desc">Ajusta los parámetros para tu sesión de repaso.</div>
+
+    <div class="setup-row">
         <span class="setup-label">Banco de preguntas:</span>
         <div class="mode-options">
           <label class="mode-label">
             <input type="radio" name="qbank" value="real" checked> Preguntas que pueden caer
           </label>
           <label class="mode-label">
-            <input type="radio" name="qbank" value="invented"> Preguntas inventadas pero para practicar otras tecnologías (LoRa, Zigbee, Z-Wave, etc...)
+            <input type="radio" name="qbank" value="invented"> Preguntas inventadas de práctica
+          </label>
+          <!-- AÑADIDA NUEVA OPCIÓN AQUÍ -->
+          <label class="mode-label">
+            <input type="radio" name="qbank" value="tayri"> Preguntas extra (De Tayri)
           </label>
         </div>
-      </div>
-  <div id="setup-panel">
-    <div class="setup-title">Configurar cuestionario</div>
-    <div class="setup-desc">Ajusta los parámetros para tu sesión de repaso. 
-      Hay 40 preguntas que no están corregidas por Felix pero que creo que están bien</div>
+    </div>
     
     <div class="setup-row">
       <span class="setup-label">Nº de preguntas:</span>
@@ -1095,7 +1100,7 @@ const ALL_QUESTIONS = [
       { text: "Seguridad: Se podrían aplicar políticas de seguridad específicas por niveles.", correct: true },
       { text: "Rendimiento optimizado: La separación en niveles permite una gestión más eficiente del tráfico.", correct: true },
       { text: "Flexibilidad y adaptabilidad: La arquitectura de tres niveles se adapta mejor a diferentes necesidades y cambios en la red.", correct: true },
-      { text: "Gestión: La segmentación en niveles facilita la administración de la red.", correct: true },
+      { text: "Gestión: La segmentación en niveles facilita la administration de la red.", correct: true },
       { text: "Interoperabilidad: Para la futura integración de los servicios de red.", correct: false },
       { text: "Integración: Para la futura interoperabilidad de los servicios de red.", correct: false }
   ]},
@@ -1186,6 +1191,7 @@ const ALL_QUESTIONS = [
       { text: "Una arquitectura más sencilla de mantener, escalar y documentar.", correct: true },
       { text: "Una disminución general del rendimiento debido a la separación de capas.", correct: false }
   ]},
+  
   // EXAMEN TEST RARO 2
   { id: "TR2-I", group: "I", exam: "TR2", text: "CONCEPTOS GENERALES - Sobre dispositivos de red", options: [
       { text: "Un switch trabaja a nivel de la capa 3 para reenviar tráfico entre redes.", correct: false },
@@ -1544,7 +1550,343 @@ const ALL_INVENTED_QUESTIONS = [
     { text: "Z-Wave garantiza interoperabilidad entre dispositivos de diferentes fabricantes certificados.", correct: true },
     { text: "Z-Wave puede transmitir datos a velocidades superiores a 1 Gbps.", correct: false }
   ]}
-]
+];
+
+const De_Tayri = [
+  {
+    "id": "EXT-01",
+    "group": "EXTRA",
+    "exam": "Variados",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas",
+    "options": [
+      { "text": "Las redes troncales que dan servicios ADSL deben utilizar una combinación de fibra y coaxial", "correct": false },
+      { "text": "La dimensión de una red que utilice CSMA/CD es independiente del tiempo de propagación", "correct": false },
+      { "text": "Un dispositivo hotswap significa que soporta altas temperaturas", "correct": false },
+      { "text": "Un acceso básico RDSI incluye un canal E2", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-02",
+    "group": "EXTRA",
+    "exam": "Variados",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas",
+    "options": [
+      { "text": "Una red a 1000Mbps siempre será mejor que una de 100Mbps", "correct": false },
+      { "text": "No se tarda lo mismo en transmitir diferentes tamaños/velocidades", "correct": true },
+      { "text": "La velocidad en baudios nunca podrá ser 1/3 de la transmisión", "correct": false },
+      { "text": "No se puede usar coaxial en banda base", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-03",
+    "group": "EXTRA",
+    "exam": "Variados",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas",
+    "options": [
+      { "text": "Un SWITCH es un dispositivo de asociado a tecnologías Ethernet.", "correct": false },
+      { "text": "Un HUB puede disponer de dirección IP para gestionarlo.", "correct": true },
+      { "text": "Las direcciones IP clásicas permiten una ampliación en el campo de direccionamiento de hasta 2 bits.", "correct": false },
+      { "text": "Se puede definir un subnetting para 7 subredes operativas.", "correct": true }
+    ]
+  },
+  {
+    "id": "EXT-04",
+    "group": "EXTRA",
+    "exam": "Variados",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas",
+    "options": [
+      { "text": "Es posible obtener concurrencia en redes Ethernet de 1000 Mpbs.", "correct": true },
+      { "text": "VoIP es el conjunto de normas, dispositivos, protocolos, en definitiva la tecnología que permite comunicar voz sobre el protocolo IP.", "correct": true },
+      { "text": "Telefonía sobre IP puede integrarse con telefonía convencional.", "correct": true },
+      { "text": "La voz ha de codificarse para poder ser transmitida por la red IP. Para ello se emplean códecs que garanticen la codificación y compresión del audio para su posterior decodificación.", "correct": true },
+      { "text": "IEEE 802.1Q se utiliza en VLANs.", "correct": true },
+      { "text": "Sólo las 2 primeras son ciertas.", "correct": false },
+      { "text": "Sólo la primera es cierta.", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-05",
+    "group": "EXTRA",
+    "exam": "Variados",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas",
+    "options": [
+      { "text": "La dimensión de una red que utilice CSMA/CD es dependiente del tiempo de propagación.", "correct": true },
+      { "text": "Un acceso primario RDSI incluye un canal E3 y E4.", "correct": false },
+      { "text": "Un acceso básico RDSI incluye un canal E1.", "correct": false },
+      { "text": "Un acceso primario RDSI equivale a 2 básicos.", "correct": false },
+      { "text": "Las troncales en las redes SDH utilizan combinaciones de fibra y par trenzado.", "correct": false },
+      { "text": "Las troncales en las redes SONET utilizan combinaciones de fibra y cobre.", "correct": false },
+      { "text": "La primera es cierta.", "correct": true }
+    ]
+  },
+  {
+    "id": "EXT-06",
+    "group": "EXTRA",
+    "exam": "Variados",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas",
+    "options": [
+      { "text": "La 6 es cierta.", "correct": false },
+      { "text": "Throughput y offset en una trama son proporcionales.", "correct": false },
+      { "text": "El throughput de una red depende en exclusiva del método de acceso empleado.", "correct": false },
+      { "text": "El throughput de una red es proporcional al flujo de carga.", "correct": false },
+      { "text": "El uso de los protocolos está limitado por el valor de MTU.", "correct": false },
+      { "text": "El throughput de una red es siempre constante.", "correct": false },
+      { "text": "Podemos denominar como “throughput” al volumen de información que fluye a través de un sistema.", "correct": true }
+    ]
+  },
+  {
+    "id": "EXT-07",
+    "group": "EXTRA",
+    "exam": "Variados",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas",
+    "options": [
+      { "text": "El nivel de transporte puede no estar presente en una comunicación.", "correct": true },
+      { "text": "El nivel 5 coinciden en OSI y TCPIP.", "correct": false },
+      { "text": "Multiplexar y Modular coinciden sólo en las comunicaciones síncronas.", "correct": false },
+      { "text": "ATM es un protocolo de nivel 3.", "correct": false },
+      { "text": "Es posible multiplexar una comunicación a nivel de transporte.", "correct": true },
+      { "text": "Las VLANs son útiles para reducir el tamaño del dominio de difusión y ayudan a separar los segmentos lógicos de una red de área local.", "correct": true },
+      { "text": "Sólo la 1 es cierta.", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-08",
+    "group": "EXTRA",
+    "exam": "Variados",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas",
+    "options": [
+      { "text": "ATM está asociado a tecnología FDDI.", "correct": false },
+      { "text": "ADSL está asociado a tecnología SDH.", "correct": false },
+      { "text": "Se puede encapsular ATM sobre SDH.", "correct": true },
+      { "text": "Se puede encapsular ATM sobre SONET.", "correct": true },
+      { "text": "Se puede encapsular Ethernet sobre SDH.", "correct": true },
+      { "text": "PCM es una técnica de modulación.", "correct": true },
+      { "text": "Ninguna de las anteriores es cierta", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-09",
+    "group": "EXTRA",
+    "exam": "Variados",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas",
+    "options": [
+      { "text": "La tecnología SDH cuenta entre sus elementos/dispositivos con multiplexores.", "correct": true },
+      { "text": "Un dispositivo de internetworking que tenga “N” direcciones físicas debe tener “N” direcciones lógicas.", "correct": false },
+      { "text": "Un dispositivo de internetworking que tenga “N” direcciones físicas debe tener “N+1” direcciones lógicas.", "correct": false },
+      { "text": "Las direcciones lógicas de una red dependen de las direcciones físicas.", "correct": false },
+      { "text": "Las direcciones físicas dependen de las direcciones lógicas", "correct": false },
+      { "text": "Es posible tener en un mismo conmutador tecnología ATM y Gigabit Ethernet integradas.", "correct": true },
+      { "text": "Ninguna de las anteriores es cierta", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-10",
+    "group": "EXTRA",
+    "exam": "Variados",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas",
+    "options": [
+      { "text": "Se utilizan números de secuencia en el modelo de datagrama.", "correct": true },
+      { "text": "Los circuitos virtuales conmutados utilizan una vía de transmisión dedicada pero ha de ser asíncrona.", "correct": false },
+      { "text": "En la conmutación de paquetes los nodos han de realizar cambios de velocidad", "correct": false },
+      { "text": "El costo en la conmutación de paquetes se realiza en función del tiempo de conexión.", "correct": false },
+      { "text": "El costo en la conmutación de circuitos se realiza en función del coste de ruta.", "correct": false },
+      { "text": "El tiempo empleado en la conmutación de circuitos es proporcional al flujo de datos que circula..", "correct": false },
+      { "text": "Sólo la segunda respuesta es cierta.", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-11",
+    "group": "EXTRA",
+    "exam": "Variados",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas",
+    "options": [
+      { "text": "El tamaño máximo de paquete en Ethernet es múltiplo de 53 bytes.", "correct": false },
+      { "text": "El tamaño mínimo del paquete en Ethernet se adoptó tomando la media aritmética del “throughput”.", "correct": false },
+      { "text": "Las redes Frame Relay son más rápidas que las ATM.", "correct": false },
+      { "text": "Sobre redes Frame Relay se puede transmitir voz.", "correct": true },
+      { "text": "Si cambio de método de acceso disminuirá la velocidad de transmisión.", "correct": false },
+      { "text": "Si cambio de método de acceso aumentará la velocidad de modulación.", "correct": false },
+      { "text": "Ninguna es cierta.", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-12",
+    "group": "EXTRA",
+    "exam": "Variados",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas",
+    "options": [
+      { "text": "En Ethernet nunca existe gap entre tramas.", "correct": false },
+      { "text": "En tecnología Ethernet el primer campo es el preámbulo que indica el inicio de trama.", "correct": true },
+      { "text": "Los puentes se diseñan para uso entre LAN's que usan protocolos idénticos en la capa física y MAC (de acceso al medio); aunque existen otros más sofisticados que permiten la conversión de formatos MAC diferentes (Ethernet-Token Ring por ejemplo).", "correct": true },
+      { "text": "Los conmutadores pueden tener la capacidad de aprender y almacenar las direcciones de la capa 2 (direcciones MAC) de los dispositivos alcanzables a través de cada uno de sus puertos.", "correct": true },
+      { "text": "La dirección MAC es utilizada en las tecnologías: Ethernet, 802.3 CSMA/CD, 802.5 o redes en anillo.", "correct": true },
+      { "text": "La dirección MAC es utilizada en las tecnologías: 802.11 redes inalámbricas (Wi-Fi), Asynchronous Transfer Mode.", "correct": true },
+      { "text": "Sólo la respuesta 1 es cierta.", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-13",
+    "group": "EXTRA",
+    "exam": "Variados",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas",
+    "options": [
+      { "text": "Es posible instalar una red ATM puro extremo a extremo (desde cliente a servidores, pasando por conmutadores y routers).", "correct": true },
+      { "text": "Si cambiamos a tecnología ATM habrá que modificar las reglas en los firewalls presentes en la red.", "correct": false },
+      { "text": "Conmutador y Hub es un mismo concepto.", "correct": false },
+      { "text": "Conectar firewalls a redes corporativas es una práctica habitual.", "correct": true },
+      { "text": "Las redes ATM soportan mayores velocidades que las SDH.", "correct": false },
+      { "text": "El EGPs (Exterior Gateway Protocol) está presente en los dispositivos de internetworking.", "correct": false },
+      { "text": "Sólo es cierta la respuesta 5.", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-14",
+    "group": "EXTRA",
+    "exam": "General",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas sobre General",
+    "options": [
+      { "text": "En banda ancha la comunicación se modula empleando portadora digital.", "correct": false },
+      { "text": "La dimensión de una red es proporcional al overhead de las tramas definidas por la tecnología.", "correct": false },
+      { "text": "La dimensión de una red mejora si empleamos como protocolo de enlace de enlace PPP.", "correct": false },
+      { "text": "El “throughput” es un concept asociado a tecnología Frame Relay.", "correct": false },
+      { "text": "El “overhead” es un concepto asociado a trama.", "correct": true },
+      { "text": "La carga y la dimensión de una red se relacionan de forma directamente proporcional.", "correct": false },
+      { "text": "Ninguna es cierta.", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-15",
+    "group": "EXTRA",
+    "exam": "OSI",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas sobre OSI",
+    "options": [
+      { "text": "Los niveles 5, 6 y 7 de OSI se pueden implementar en software.", "correct": true },
+      { "text": "El nivel 2 de OSI se comunica a través de los campos de direccionamiento IP del datagrama.", "correct": false },
+      { "text": "Modificar el MTU (Maximum Transmission Unit) puede afectar al rendimiento de la red.", "correct": true },
+      { "text": "Los puertos (ports) definidos en TCP permiten hacer uso de la multiplexación.", "correct": true },
+      { "text": "En un firewall también se pueden aplicar los niveles de OSI como referencia.", "correct": true },
+      { "text": "Solo es cierta la número 4.", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-16",
+    "group": "EXTRA",
+    "exam": "Tecnología",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas sobre Tecnología",
+    "options": [
+      { "text": "ATM es una tecnología de Distribución.", "correct": false },
+      { "text": "ATM es una tecnología, no un protocolo.", "correct": false },
+      { "text": "Las redes SONET se pueden utilizar como solución de conectividad.", "correct": true },
+      { "text": "Se puede desplegar una red corporativa con tecnología SONET y SDH.", "correct": true },
+      { "text": "Las redes ATM permiten topología en anillo.", "correct": true },
+      { "text": "Una red FTTH está pensada para rangos de velocidad en Gbps.", "correct": true },
+      { "text": "La 2 y 3 son ciertas.", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-17",
+    "group": "EXTRA",
+    "exam": "Protocolo",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas sobre Protocolo",
+    "options": [
+      { "text": "Es posible utilizar IP sobre SONET", "correct": true },
+      { "text": "Es posible utilizar IP y ATM en comunicaciones de cable submarino.", "correct": true },
+      { "text": "Un protocolo síncrono es mejor que otro asíncrono.", "correct": false },
+      { "text": "Los protocolos de red trabajan en conjunto para determinadas tecnologías.", "correct": true },
+      { "text": "ATM es una tecnología no orientada a conexión.", "correct": false },
+      { "text": "Solo es cierta la número 2.", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-18",
+    "group": "EXTRA",
+    "exam": "Diseño I",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas sobre Diseño I",
+    "options": [
+      { "text": "El nivel de acceso es correcto plantearlo en un entorno de edificio.", "correct": true },
+      { "text": "Las diferentes redes de telecomunicación (operadores) requieren de puntos de intercambio de tráfico.", "correct": true },
+      { "text": "La red de cableado estructurado de un edificio debe seguir un diseño jerárquico.", "correct": true },
+      { "text": "Diseñar con escalabilidad de enlace es más importante que con fiabilidad de equipo.", "correct": false },
+      { "text": "Diseñar con fiabilidad de enlace es más importante que con escalabilidad de equipo.", "correct": false },
+      { "text": "Diseñar con interoperabilidad afecta a la escalabilidad y a la fiabilidad.", "correct": false },
+      { "text": "Solo la 3 y 4 son ciertas.", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-19",
+    "group": "EXTRA",
+    "exam": "Diseño II",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas sobre Diseño II",
+    "options": [
+      { "text": "En un mal diseño de red los tiempos de espera son bajos en condiciones de carga “media-alta”.", "correct": false },
+      { "text": "Es posible obtener concurrencia en redes SONET.", "correct": true },
+      { "text": "Es posible obtener concurrencia en redes con topología en malla.", "correct": true },
+      { "text": "Una “backbone” redundante puede estar compuesto por solo una tecnología de red.", "correct": true },
+      { "text": "Los niveles de CORE son redundantes.", "correct": false },
+      { "text": "Todas las anteriores son falsas.", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-20",
+    "group": "EXTRA",
+    "exam": "Medios de transmisión",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas sobre Medios de transmisión",
+    "options": [
+      { "text": "Se puede emplear par trenzado para transmitir en banda base.", "correct": true },
+      { "text": "Las redes ATM son más fiables que las redes Gigabit debido al tamaño de celda fijo.", "correct": false },
+      { "text": "Si cambio el medio de transmisión afectará a la velocidad de transmisión.", "correct": false },
+      { "text": "Es posible encontrar cable de 200 pares en un bucle de abonado de una zona residencial.", "correct": true },
+      { "text": "La categoría de un cable UTP viene marcada por la velocidad de modulación y el tamaño de trama.", "correct": false },
+      { "text": "El cableado UTP se elige en base a la modulación de la señal que ha de transmitir.", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-21",
+    "group": "EXTRA",
+    "exam": "Voz/Telefonía",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas sobre Voz/Telefonía",
+    "options": [
+      { "text": "La integración voz/datos de una red es el mismo concepto que telefonía IP.", "correct": false },
+      { "text": "Podemos implementar telefonía IP sobre una determinada WAN.", "correct": true },
+      { "text": "Algunas PBXs pueden incluir integración IP (telefonia IP).", "correct": true },
+      { "text": "El protocolo IP está siempre presente en una comunicación de voz.", "correct": false },
+      { "text": "Un proyecto de telefonía IP es más rentable que uno de telefonía basado en PBXs convencionales.", "correct": false },
+      { "text": "La voz ha de pasar un proceso de cuantificación en una conversion analogica/digital.", "correct": true },
+      { "text": "Solo es cierta la número 5.", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-22",
+    "group": "EXTRA",
+    "exam": "Dispositivos",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas sobre Dispositivos",
+    "options": [
+      { "text": "Un gateway (pasarela) trabaja a 3 niveles.", "correct": false },
+      { "text": "Un conmutador trabaja al mismo nivel que un router.", "correct": false },
+      { "text": "Un conmutador multipuerto trabaja de forma más eficiente que un router multipuerto.", "correct": false },
+      { "text": "Los conmutadores SONET son más rápidos que los SDH.", "correct": false },
+      { "text": "Un dispositivo de internetworking puede no tener direcciones lógicas.", "correct": true },
+      { "text": "Un conmutador (switch) equivale funcionalmente a un bridge multipuerto.", "correct": true },
+      { "text": "Solo la 6 es cierta.", "correct": false }
+    ]
+  },
+  {
+    "id": "EXT-23",
+    "group": "EXTRA",
+    "exam": "Seguridad",
+    "text": "Señale sólo aquellas respuestas estrictamente verdaderas sobre Seguridad",
+    "options": [
+      { "text": "La seguridad ha de ser siempre igual o superior a la interoperabilidad.", "correct": false },
+      { "text": "Un proyecto de seguridad por red incluye listas de acceso.", "correct": true },
+      { "text": "Un NAT puede ayudar a proteger una red corporativa.", "correct": true },
+      { "text": "Emplear una DMZ externa e interna mejora el rendimiento de las redes corporativas.", "correct": false },
+      { "text": "Entre redes interoperables es interesante aplicar mecanismos de seguridad.", "correct": true },
+      { "text": "Entre dos routers de dos corporaciones se sitúa un firewall.", "correct": false },
+      { "text": "Solo es cierta la numero 5.", "correct": false }
+    ]
+  }
+];
+
 
 // ─── STATE ─────────────────────────────────────────────────────────────────────
 let selectedCount = 5;
@@ -1580,8 +1922,10 @@ document.querySelectorAll('input[name="qbank"]').forEach(radio => {
   radio.addEventListener('change', (e) => {
     if (e.target.value === 'real') {
       currentQuestionBank = ALL_QUESTIONS;
-    } else {
+    } else if (e.target.value === 'invented') {
       currentQuestionBank = ALL_INVENTED_QUESTIONS;
+    } else if (e.target.value === 'tayri') {
+      currentQuestionBank = De_Tayri;
     }
     
     // Actualizamos el máximo permitido y la etiqueta visible
