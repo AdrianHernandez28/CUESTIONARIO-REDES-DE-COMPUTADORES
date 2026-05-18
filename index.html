@@ -538,7 +538,17 @@
     <h1>Cuestionario<br>de Redes</h1>
     <p class="subtitle">Selección aleatoria · Multirrespuesta</p>
   </header>
-
+  <div class="setup-row">
+        <span class="setup-label">Banco de preguntas:</span>
+        <div class="mode-options">
+          <label class="mode-label">
+            <input type="radio" name="qbank" value="real" checked> Preguntas que pueden caer
+          </label>
+          <label class="mode-label">
+            <input type="radio" name="qbank" value="invented"> Preguntas inventadas (Tecnologías)
+          </label>
+        </div>
+      </div>
   <div id="setup-panel">
     <div class="setup-title">Configurar cuestionario</div>
     <div class="setup-desc">Ajusta los parámetros para tu sesión de repaso. 
@@ -1421,6 +1431,121 @@ const ALL_QUESTIONS = [
   ]}
 ];
 
+const ALL_INVENTED_QUESTIONS = [
+  { id: "TECH-ETH", group: "A", exam: "Ethernet",
+  text: "Indica cuáles de las siguientes afirmaciones son correctas:",
+  options: [
+    { text: "Ethernet opera en la capa de enlace del modelo OSI.", correct: true },
+    { text: "El estándar Gigabit Ethernet puede operar sobre par de cobre y fibra óptica.", correct: true },
+    { text: "Ethernet utiliza el protocolo CSMA/CD en todos sus estándares modernos.", correct: false },
+    { text: "El tamaño mínimo de trama Ethernet es de 64 bytes.", correct: true },
+    { text: "Fast Ethernet opera a 100 Mbps y es incompatible con Ethernet de 10 Mbps.", correct: false },
+    { text: "Las direcciones MAC usadas en Ethernet son de 48 bits.", correct: true },
+    { text: "Ethernet en topología estrella requiere un hub o switch en el centro.", correct: true },
+    { text: "El estándar 10GbE (10 Gigabit Ethernet) no puede operar sobre fibra óptica.", correct: false },
+    { text: "En redes Ethernet modernas con switches, no hay colisiones en modo full-duplex.", correct: true },
+    { text: "Ethernet siempre garantiza calidad de servicio (QoS) por diseño.", correct: false }
+  ]},
+  { id: "TECH-ATM", group: "A", exam: "ATM",
+  text: "Indica cuáles de las siguientes afirmaciones son correctas:",
+  options: [
+    { text: "Las celdas ATM tienen un tamaño fijo de 53 bytes: 48 de payload y 5 de cabecera.", correct: true },
+    { text: "ATM es exclusivamente una tecnología de conmutación de circuitos.", correct: false },
+    { text: "ATM puede proporcionar QoS diferenciada para distintos tipos de tráfico.", correct: true },
+    { text: "ATM puede transportar voz, vídeo y datos sobre la misma infraestructura.", correct: true },
+    { text: "ATM ha sustituido por completo a MPLS en redes troncales modernas.", correct: false },
+    { text: "Es posible encapsular IP sobre ATM.", correct: true },
+    { text: "ATM se puede integrar con redes Ethernet.", correct: true },
+    { text: "ATM emplea circuitos virtuales para el transporte de datos.", correct: true },
+    { text: "Las redes ATM tienen una limitación de distancia debida al protocolo.", correct: false },
+    { text: "ATM puede coexistir con MPLS en redes troncales de operador.", correct: true }
+  ]},
+  { id: "TECH-MPLS", group: "A", exam: "MPLS",
+  text: "Indica cuáles de las siguientes afirmaciones son correctas:",
+  options: [
+    { text: "MPLS utiliza etiquetas para reenviar paquetes sin revisar la cabecera IP en cada salto.", correct: true },
+    { text: "MPLS opera estrictamente en la capa 3 del modelo OSI.", correct: false },
+    { text: "MPLS permite establecer caminos predefinidos con garantías de calidad de servicio.", correct: true },
+    { text: "MPLS es una tecnología exclusiva para redes LAN de pequeño tamaño.", correct: false },
+    { text: "MPLS puede coexistir con OTN y Carrier Ethernet.", correct: true },
+    { text: "MPLS se usa en redes de operador para crear VPNs y rutas de tráfico eficientes.", correct: true },
+    { text: "Los paquetes MPLS siempre viajan encapsulados en formato ATM.", correct: false },
+    { text: "MPLS permite la migración gradual de redes ATM hacia soluciones más modernas.", correct: true },
+    { text: "MPLS es incompatible con tecnologías de transporte como SDH.", correct: false },
+    { text: "El reenvío de paquetes en MPLS es generalmente más rápido que el enrutamiento IP tradicional.", correct: true }
+  ]},
+  { id: "TECH-SDH", group: "A", exam: "SDH",
+  text: "Indica cuáles de las siguientes afirmaciones son correctas:",
+  options: [
+    { text: "SDH es una tecnología de multiplexación y transmisión sincronizada sobre fibra óptica.", correct: true },
+    { text: "SDH puede transportar voz, datos y vídeo en su jerarquía estructurada.", correct: true },
+    { text: "SDH comprime los datos para facilitar su almacenamiento y transmisión.", correct: false },
+    { text: "SDH emplea técnicas de encriptación nativas para proteger los datos.", correct: false },
+    { text: "SDH puede utilizarse como medio de transporte para ATM.", correct: true },
+    { text: "SDH utiliza tramas de tamaño fijo con intervalos temporales constantes.", correct: true },
+    { text: "SDH ha sido completamente reemplazada por OTN y ya no se despliega en ninguna red.", correct: false },
+    { text: "Las velocidades estándar de SDH incluyen STM-1 (155 Mbps), STM-4, STM-16, etc.", correct: true },
+    { text: "SDH es una tecnología de enrutamiento dinámico para determinar la mejor ruta.", correct: false },
+    { text: "SDH está diseñada principalmente para redes troncales de alta capacidad.", correct: true }
+  ]},
+  { id: "TECH-FR", group: "A", exam: "Frame Relay",
+  text: "Indica cuáles de las siguientes afirmaciones son correctas:",
+  options: [
+    { text: "Frame Relay permite enlaces tanto por debajo como por encima de 2 Mbps.", correct: true },
+    { text: "Frame Relay es un protocolo exclusivo de los niveles 3 y 4 del modelo OSI.", correct: false },
+    { text: "Frame Relay opera sobre circuitos virtuales permanentes (PVC) o conmutados (SVC).", correct: true },
+    { text: "Frame Relay incluye mecanismos de corrección de errores en cada nodo intermedio.", correct: false },
+    { text: "Frame Relay es una tecnología de conmutación de paquetes orientada a redes WAN.", correct: true },
+    { text: "Frame Relay se utiliza habitualmente para interconectar sedes corporativas remotas.", correct: true },
+    { text: "Frame Relay puede encapsular distintos protocolos de red como IP o IPX.", correct: true },
+    { text: "Frame Relay tiene velocidades típicas de entre 56 Kbps y varios Mbps.", correct: true },
+    { text: "Frame Relay proporciona calidad de servicio garantizada para todo el tráfico.", correct: false },
+    { text: "Frame Relay ha sido ampliamente sustituido por MPLS en redes WAN modernas.", correct: true }
+  ]},
+  { id: "TECH-LORA", group: "A", exam: "LoRa / LoRaWAN",
+  text: "Indica cuáles de las siguientes afirmaciones son correctas:",
+  options: [
+    { text: "LoRa es una tecnología inalámbrica de largo alcance diseñada para aplicaciones IoT de bajo consumo.", correct: true },
+    { text: "LoRaWAN puede alcanzar distancias de hasta 15 km en entornos rurales.", correct: true },
+    { text: "LoRa opera en bandas de frecuencia con licencia, como las usadas por LTE.", correct: false },
+    { text: "La velocidad de transmisión de LoRaWAN es comparable a la de Wi-Fi.", correct: false },
+    { text: "LoRaWAN define la arquitectura de red y el protocolo de acceso al medio sobre la modulación LoRa.", correct: true },
+    { text: "LoRa es adecuado para transmitir pequeñas cantidades de datos de forma esporádica.", correct: true },
+    { text: "LoRaWAN utiliza una topología en estrella donde los nodos finales se comunican directamente entre sí.", correct: false },
+    { text: "LoRa puede coexistir con otras tecnologías IoT como Sigfox o NB-IoT en el mismo entorno.", correct: true },
+    { text: "LoRaWAN proporciona mecanismos de seguridad basados en cifrado AES-128.", correct: true },
+    { text: "LoRa es una tecnología exclusiva para entornos industriales y no se usa en ciudades inteligentes.", correct: false }
+  ]},
+  { id: "TECH-ZIGBEE", group: "A", exam: "Zigbee",
+  text: "Indica cuáles de las siguientes afirmaciones son correctas:",
+  options: [
+    { text: "Zigbee opera en la banda de 2.4 GHz a nivel global.", correct: true },
+    { text: "Zigbee está basado en el estándar IEEE 802.15.4.", correct: true },
+    { text: "Zigbee soporta topología en malla (mesh), lo que permite extender la cobertura de red.", correct: true },
+    { text: "Zigbee ofrece velocidades de transmisión comparables a las de Bluetooth clásico.", correct: false },
+    { text: "Zigbee está diseñado para dispositivos de bajo consumo energético.", correct: true },
+    { text: "Zigbee permite conectar hasta un máximo de 10 dispositivos por red.", correct: false },
+    { text: "Zigbee se utiliza habitualmente en domótica, automatización industrial y sensores.", correct: true },
+    { text: "Zigbee requiere una dirección IP para cada nodo de la red.", correct: false },
+    { text: "El alcance típico de Zigbee en interiores es de entre 10 y 100 metros.", correct: true },
+    { text: "Zigbee es incompatible con el protocolo Matter, el nuevo estándar de domótica.", correct: false }
+  ]},
+  { id: "TECH-ZWAVE", group: "A", exam: "Z-Wave",
+  text: "Indica cuáles de las siguientes afirmaciones son correctas:",
+  options: [
+    { text: "Z-Wave opera en bandas de frecuencia sub-GHz, evitando interferencias con Wi-Fi y Zigbee.", correct: true },
+    { text: "Z-Wave soporta topología en malla, permitiendo que los dispositivos actúen como repetidores.", correct: true },
+    { text: "Z-Wave está diseñado principalmente para aplicaciones de domótica y automatización del hogar.", correct: true },
+    { text: "Z-Wave puede conectar hasta 232 dispositivos dentro de una misma red.", correct: true },
+    { text: "Z-Wave utiliza la misma frecuencia de 2.4 GHz que Wi-Fi y Zigbee.", correct: false },
+    { text: "Z-Wave ofrece un alcance típico de 30 a 100 metros en interiores.", correct: true },
+    { text: "Z-Wave es un estándar abierto gestionado por un consorcio sin restricciones de fabricante.", correct: false },
+    { text: "Z-Wave tiene un consumo energético muy bajo, adecuado para dispositivos con batería.", correct: true },
+    { text: "Z-Wave garantiza interoperabilidad entre dispositivos de diferentes fabricantes certificados.", correct: true },
+    { text: "Z-Wave puede transmitir datos a velocidades superiores a 1 Gbps.", correct: false }
+  ]}
+]
+
 // ─── STATE ─────────────────────────────────────────────────────────────────────
 let selectedCount = 5;
 let questions = [];
@@ -1428,21 +1553,45 @@ let current = 0;
 let score = 0;
 let answered = false;
 let quizMode = 'estudio';
-const MAX = ALL_QUESTIONS.length;
+
+const initialBankSelected = document.querySelector('input[name="qbank"]:checked').value;
+
+let currentQuestionBank = ALL_QUESTIONS;
+let MAX = currentQuestionBank.length;
 
 // ─── SETUP ─────────────────────────────────────────────────────────────────────
 document.getElementById('max-label').textContent = `máx. ${MAX} disponibles`;
 
 const numDisplay = document.getElementById('num-display');
+const maxLabel = document.getElementById('max-label');
 
 function updateNum(n) {
   selectedCount = Math.max(1, Math.min(MAX, n));
   numDisplay.textContent = selectedCount;
 }
+maxLabel.textContent = `máx. ${MAX} disponibles`;
 updateNum(5);
 
 document.getElementById('btn-minus').addEventListener('click', () => updateNum(selectedCount - 1));
 document.getElementById('btn-plus').addEventListener('click', () => updateNum(selectedCount + 1));
+
+// Listener para el cambio de banco de preguntas
+document.querySelectorAll('input[name="qbank"]').forEach(radio => {
+  radio.addEventListener('change', (e) => {
+    if (e.target.value === 'real') {
+      currentQuestionBank = ALL_QUESTIONS;
+    } else {
+      currentQuestionBank = ALL_INVENTED_QUESTIONS;
+    }
+    
+    // Actualizamos el máximo permitido y la etiqueta visible
+    MAX = currentQuestionBank.length;
+    maxLabel.textContent = `máx. ${MAX} disponibles`;
+    
+    // Ajustamos la cantidad de preguntas seleccionadas si excede el nuevo máximo
+    updateNum(selectedCount);
+  });
+});
 
 document.getElementById('btn-start').addEventListener('click', startQuiz);
 
@@ -1457,7 +1606,7 @@ function shuffle(arr) {
 
 function startQuiz() {
   quizMode = document.querySelector('input[name="mode"]:checked').value;
-  questions = shuffle(ALL_QUESTIONS).slice(0, selectedCount);
+  questions = shuffle(currentQuestionBank).slice(0, selectedCount);
   current = 0;
   score = 0;
   
